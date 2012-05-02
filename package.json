@@ -1,6 +1,6 @@
 {
   "name": "bagofholding",
-  "description": "An uncursed bag of various utility functions.",
+  "description": "An uncursed bag of various Node.js utility functions.",
   "keywords": [
   ],
   "version": "0.0.1",
