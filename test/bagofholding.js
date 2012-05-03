@@ -2,7 +2,8 @@ var assert = require('assert'),
   bag = require('../lib/bagofholding'),
   mocha = require('mocha'),
   sandbox = require('sandboxed-module'),
-  should = require('should');
+  should = require('should'),
+  checks, mocks;
 
 describe('bagofholding', function () {
 

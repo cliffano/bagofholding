@@ -3,6 +3,7 @@ var assert = require('assert'),
   mocha = require('mocha'),
   sandbox = require('sandboxed-module'),
   should = require('should'),
+  checks, mocks;
   obj = require('../lib/obj');
 
 describe('obj', function () {

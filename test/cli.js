@@ -3,8 +3,8 @@ var assert = require('assert'),
   mocha = require('mocha'),
   sandbox = require('sandboxed-module'),
   should = require('should'),
-  cli,
-  checks;
+  checks, mocks,
+  cli;
 
 describe('cli', function () {
 
