@@ -36,4 +36,42 @@ describe('mock', function () {
       assert.equal(checks.process_exit_code, 1);
     });
   });
+
+  describe('socket', function () {
+
+    it('should count how many times socket close is called', function () {
+      var socket = mock.socket(checks);
+      assert.equal(checks.socket_close_count, undefined);
+      socket.close();
+      assert.equal(checks.socket_close_count, 1);
+      socket.close();
+      socket.close();
+      socket.close();
+      socket.close();
+      assert.equal(checks.socket_close_count, 5);
+    });
+
+    it('should call callback with correct mock arguments when socket event is called', function () {
+      mock.socket(checks, {
+        socket_on_someevent: ['foo', 'bar']
+      }).on('someevent', function (arg1, arg2) {
+        checks['socket_on_someevent_args'] = [arg1, arg2];
+      });
+      assert.equal(checks.socket_on_someevent_args.length, 2);
+      assert.equal(checks.socket_on_someevent_args[0], 'foo');
+      assert.equal(checks.socket_on_someevent_args[1], 'bar');
+    });
+
+    it('should call callback with correct mock arguments when socket send is called', function () {
+      var buffer = new Buffer('somemessage');
+      mock.socket(checks, {
+        socket_send: ['foo', 'bar']
+      }).send(buffer, 0, buffer.length, 33848, 'http://host', function (arg1, arg2) {
+        checks['socket_send_args'] = [arg1, arg2];
+      });
+      assert.equal(checks.socket_send_args.length, 2);
+      assert.equal(checks.socket_send_args[0], 'foo');
+      assert.equal(checks.socket_send_args[1], 'bar');
+    });
+  });
 });
