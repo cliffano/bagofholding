@@ -2,6 +2,7 @@ var assert = require('assert'),
   bag = require('bagofholding'),
   mocha = require('mocha'),
   sandbox = require('sandboxed-module'),
+  should = require('should'),
   cli,
   checks;
 
@@ -26,14 +27,14 @@ describe('cli', function () {
 
     it('should exit with status code 0 when error does not exist', function () {
       cli.exit(null);
-      assert.equal(checks.process_exit_code, 0);
+      checks.process_exit_code.should.equal(0);
     });
 
     it('should exit with status code 1 and logs the error message when error exists', function () {
       cli.exit(new Error('some error'));
-      assert.equal(checks.console_error_messages.length, 1);
-      assert.equal(checks.console_error_messages[0], 'some error');
-      assert.equal(checks.process_exit_code, 1);
+      checks.console_error_messages.length.should.equal(1);
+      checks.console_error_messages[0].should.equal('some error');
+      checks.process_exit_code.should.equal(1);
     });
   });
 
@@ -41,16 +42,16 @@ describe('cli', function () {
 
     it('should exit with status code 0 and logs the result when error does not exist and no success callback is specified', function () {
       cli.exit_cb()(null, 'some success');
-      assert.equal(checks.console_log_messages.length, 1);
-      assert.equal(checks.console_log_messages[0], 'some success');
-      assert.equal(checks.process_exit_code, 0);
+      checks.console_log_messages.length.should.equal(1);
+      checks.console_log_messages[0].should.equal('some success');
+      checks.process_exit_code.should.equal(0);
     });
 
     it('should exit with status code 1 and logs the error message when error exists and no error callback is specified', function () {
       cli.exit_cb()(new Error('some error'));
-      assert.equal(checks.console_error_messages.length, 1);
-      assert.equal(checks.console_error_messages[0], 'some error');
-      assert.equal(checks.process_exit_code, 1);
+      checks.console_error_messages.length.should.equal(1);
+      checks.console_error_messages[0].should.equal('some error');
+      checks.process_exit_code.should.equal(1);
     });
 
     it('should exit with status code 0 and call success callback when error does not exist and success callback is specified', function () {
@@ -58,8 +59,8 @@ describe('cli', function () {
         checks.success_result = result;
       }
       cli.exit_cb(null, successCb)(null, 'some success');
-      assert.equal(checks.success_result, 'some success');
-      assert.equal(checks.process_exit_code, 0);
+      checks.success_result.should.equal('some success');
+      checks.process_exit_code.should.equal(0);
     });
 
     it('should exit with status code 1 and call error callback when error exists and error callback is specified', function () {
@@ -67,8 +68,8 @@ describe('cli', function () {
         checks.error_err = err;
       }
       cli.exit_cb(errorCb)(new Error('some error'));
-      assert.equal(checks.error_err.message, 'some error');
-      assert.equal(checks.process_exit_code, 1);
+      checks.error_err.message.should.equal('some error');
+      checks.process_exit_code.should.equal(1);
     });
   });
 });
