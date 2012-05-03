@@ -2,8 +2,9 @@ var assert = require('assert'),
   bag = require('bagofholding'),
   mocha = require('mocha'),
   sandbox = require('sandboxed-module'),
-  mock = require('../lib/mock'),
-  checks;
+  should = require('should'),
+  checks, mocks,
+  mock = require('../lib/mock');
 
 describe('mock', function () {
 
@@ -16,15 +17,15 @@ describe('mock', function () {
     it('should set message when console error is called', function () {
       var console = mock.console(checks);
       console.error('some error');
-      assert.equal(checks.console_error_messages.length, 1);
-      assert.equal(checks.console_error_messages[0], 'some error');
+      checks.console_error_messages.length.should.equal(1);
+      checks.console_error_messages[0].should.equal('some error');
     });
 
     it('should set message when console log is called', function () {
       var console = mock.console(checks);
       console.log('some log');
-      assert.equal(checks.console_log_messages.length, 1);
-      assert.equal(checks.console_log_messages[0], 'some log');
+      checks.console_log_messages.length.should.equal(1);
+      checks.console_log_messages[0].should.equal('some log');
     });
   });
 
@@ -33,7 +34,7 @@ describe('mock', function () {
     it('should set code when process exit is called', function () {
       var process = mock.process(checks);
       process.exit(1);
-      assert.equal(checks.process_exit_code, 1);
+      checks.process_exit_code.should.equal(1);
     });
   });
 
@@ -41,37 +42,48 @@ describe('mock', function () {
 
     it('should count how many times socket close is called', function () {
       var socket = mock.socket(checks);
-      assert.equal(checks.socket_close_count, undefined);
+      should.not.exist(checks.socket_close__count);
       socket.close();
-      assert.equal(checks.socket_close_count, 1);
-      socket.close();
-      socket.close();
+      checks.socket_close__count.should.equal(1);
       socket.close();
       socket.close();
-      assert.equal(checks.socket_close_count, 5);
+      socket.close();
+      socket.close();
+      checks.socket_close__count.should.equal(5);
     });
 
     it('should call callback with correct mock arguments when socket event is called', function () {
+
       mock.socket(checks, {
         socket_on_someevent: ['foo', 'bar']
-      }).on('someevent', function (arg1, arg2) {
-        checks['socket_on_someevent_args'] = [arg1, arg2];
+      }).on('someevent', function cb(arg1, arg2) {
+        checks['socket_on_someevent_cb_args'] = cb.arguments;
       });
-      assert.equal(checks.socket_on_someevent_args.length, 2);
-      assert.equal(checks.socket_on_someevent_args[0], 'foo');
-      assert.equal(checks.socket_on_someevent_args[1], 'bar');
+      checks.socket_on_someevent__args.length.should.equal(2);
+      checks.socket_on_someevent__args[0].should.equal('someevent');
+      checks.socket_on_someevent__args[1].should.be.a('function');
+      checks.socket_on_someevent_cb_args.length.should.equal(2);
+      checks.socket_on_someevent_cb_args[0].should.equal('foo');
+      checks.socket_on_someevent_cb_args[1].should.equal('bar');
     });
 
     it('should call callback with correct mock arguments when socket send is called', function () {
+
       var buffer = new Buffer('somemessage');
       mock.socket(checks, {
         socket_send: ['foo', 'bar']
-      }).send(buffer, 0, buffer.length, 33848, 'http://host', function (arg1, arg2) {
-        checks['socket_send_args'] = [arg1, arg2];
+      }).send(buffer, 0, buffer.length, 33848, 'http://host', function cb(arg1, arg2) {
+        checks['socket_send_cb_args'] = cb.arguments;
       });
-      assert.equal(checks.socket_send_args.length, 2);
-      assert.equal(checks.socket_send_args[0], 'foo');
-      assert.equal(checks.socket_send_args[1], 'bar');
+      checks.socket_send__args.length.should.equal(6);
+      checks.socket_send__args[0].toString().should.equal('somemessage');
+      checks.socket_send__args[1].should.equal(0);
+      checks.socket_send__args[2].should.equal(11);
+      checks.socket_send__args[3].should.equal(33848);
+      checks.socket_send__args[4].should.equal('http://host');
+      checks.socket_send_cb_args.length.should.equal(2);
+      checks.socket_send_cb_args[0].should.equal('foo');
+      checks.socket_send_cb_args[1].should.equal('bar');
     });
   });
 });
