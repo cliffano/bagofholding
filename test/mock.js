@@ -52,12 +52,13 @@ describe('mock', function () {
       checks.socket_close__count.should.equal(5);
     });
 
-    it('should call callback with correct mock arguments when socket event is called', function () {
+    it('should call callback with correct mock arguments when socket event is called', function (done) {
 
       mock.socket(checks, {
         socket_on_someevent: ['foo', 'bar']
       }).on('someevent', function cb(arg1, arg2) {
         checks['socket_on_someevent_cb_args'] = cb.arguments;
+        done();
       });
       checks.socket_on_someevent__args.length.should.equal(2);
       checks.socket_on_someevent__args[0].should.equal('someevent');
@@ -67,13 +68,14 @@ describe('mock', function () {
       checks.socket_on_someevent_cb_args[1].should.equal('bar');
     });
 
-    it('should call callback with correct mock arguments when socket send is called', function () {
+    it('should call callback with correct mock arguments when socket send is called', function (done) {
 
       var buffer = new Buffer('somemessage');
       mock.socket(checks, {
         socket_send: ['foo', 'bar']
       }).send(buffer, 0, buffer.length, 33848, 'http://host', function cb(arg1, arg2) {
         checks['socket_send_cb_args'] = cb.arguments;
+        done();
       });
       checks.socket_send__args.length.should.equal(6);
       checks.socket_send__args[0].toString().should.equal('somemessage');
