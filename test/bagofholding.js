@@ -1,5 +1,4 @@
-var assert = require('assert'),
-  bag = require('../lib/bagofholding'),
+var bag = require('../lib/bagofholding'),
   mocha = require('mocha'),
   sandbox = require('sandboxed-module'),
   should = require('should'),
