@@ -5,6 +5,14 @@ var bag = require('../lib/bagofholding'),
 
 describe('bagofholding', function () {
 
+  function create(checks, mocks) {
+  }
+  
+  beforeEach(function () {
+    checks = {};
+    mocks = {};
+  });
+
   it('should expose all modules', function () {
     should.exist(bag.cli);
     should.exist(bag.mock);

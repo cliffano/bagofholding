@@ -6,8 +6,12 @@ var bag = require('bagofholding'),
 
 describe('mock', function () {
 
+  function create(checks, mocks) {
+  }
+  
   beforeEach(function () {
     checks = {};
+    mocks = {};
   });
 
   describe('console', function () {

@@ -6,6 +6,14 @@ var bag = require('bagofholding'),
 
 describe('obj', function () {
 
+  function create(checks, mocks) {
+  }
+  
+  beforeEach(function () {
+    checks = {};
+    mocks = {};
+  });
+
   describe('exist', function () {
 
     it('should return false when object is empty', function () {
