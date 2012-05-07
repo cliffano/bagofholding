@@ -14,7 +14,7 @@ describe('mock', function () {
     mocks = {};
   });
 
-  describe('child_process', function () {
+  describe('childProcess', function () {
 
     it('should ', function (done) {
       mocks = {
@@ -22,8 +22,8 @@ describe('mock', function () {
         child_process_exec_stdout: 'somestdout',
         child_process_exec_stderr: 'somestderr'
       }
-      var child_process = mock.child_process(checks, mocks);
-      child_process.exec('somecommand', function cb(err, stdout, stderr) {
+      var childProcess = mock.childProcess(checks, mocks);
+      childProcess.exec('somecommand', function cb(err, stdout, stderr) {
         checks.child_process_cb_args = cb.arguments;
         done();
       });
