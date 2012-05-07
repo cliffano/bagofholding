@@ -8,10 +8,33 @@ describe('mock', function () {
 
   function create(checks, mocks) {
   }
-  
+
   beforeEach(function () {
     checks = {};
     mocks = {};
+  });
+
+  describe('child_process', function () {
+
+    it('should ', function (done) {
+      mocks = {
+        child_process_exec_err: new Error('someerror'),
+        child_process_exec_stdout: 'somestdout',
+        child_process_exec_stderr: 'somestderr'
+      }
+      var child_process = mock.child_process(checks, mocks);
+      child_process.exec('somecommand', function cb(err, stdout, stderr) {
+        checks.child_process_cb_args = cb.arguments;
+        done();
+      });
+      checks.child_process_exec__args.length.should.equal(2);
+      checks.child_process_exec__args[0].should.equal('somecommand');
+      checks.child_process_exec__args[1].should.be.a('function');
+      checks.child_process_cb_args.length.should.equal(3);
+      checks.child_process_cb_args[0].message.should.equal('someerror');
+      checks.child_process_cb_args[1].should.equal('somestdout');
+      checks.child_process_cb_args[2].should.equal('somestderr');
+    });
   });
 
   describe('console', function () {
