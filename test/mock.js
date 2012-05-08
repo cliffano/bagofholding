@@ -54,6 +54,30 @@ describe('mock', function () {
     });
   });
 
+  describe('fs', function () {
+
+    it('should return mock file when an existing file is read', function () {
+      mocks = {
+        'fs_readFileSync_someexistingfile': 'somefilecontent'
+      };
+      var fs = mock.fs(checks, mocks);
+      fs.readFileSync('someexistingfile').should.equal('somefilecontent');
+      checks.fs_readFileSync_file.should.equal('someexistingfile');
+    });
+
+    it('should throw an error when an inexisting file is read', function (done) {
+      var fs = mock.fs(checks, mocks);
+      try {
+        fs.readFileSync('someinexistingfile');
+        should.fail('An error should\'ve been thrown');
+      } catch (err) {
+        err.message.should.equal('File someinexistingfile does not exist');
+        done();
+      }
+      checks.fs_readFileSync_file.should.equal('someinexistingfile');
+    });
+  });
+
   describe('process', function () {
 
     it('should set code when process exit is called', function () {
