@@ -90,10 +90,10 @@ describe('mock', function () {
 
     it('should return mock environment variables when process env is called', function () {
       mocks = {
-        process_env: { 'HOME': '/usr/blah' }
+        process_env: { HOME: '/home/blah' }
       };
       var process = mock.process(checks, mocks);
-      process.env.HOME.should.equal('/usr/blah');
+      process.env.HOME.should.equal('/home/blah');
     });
 
     it('should set code when process exit is called', function () {
