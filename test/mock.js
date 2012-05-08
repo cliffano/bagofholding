@@ -80,6 +80,22 @@ describe('mock', function () {
 
   describe('process', function () {
 
+    it('should return mock current directory when process cwd is called', function () {
+      mocks = {
+        process_cwd: 'somedir'
+      };
+      var process = mock.process(checks, mocks);
+      process.cwd().should.equal('somedir');
+    });
+
+    it('should return mock environment variables when process env is called', function () {
+      mocks = {
+        process_env: { 'HOME': '/usr/blah' }
+      };
+      var process = mock.process(checks, mocks);
+      process.env.HOME.should.equal('/usr/blah');
+    });
+
     it('should set code when process exit is called', function () {
       var process = mock.process(checks);
       process.exit(1);
