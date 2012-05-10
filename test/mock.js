@@ -80,6 +80,17 @@ describe('mock', function () {
 
   describe('process', function () {
 
+    it('should return mock process arguments when process argv is called', function () {
+      mocks = {
+        process_argv: [ 'node', '/home/blah', 'cmd1' ]
+      };
+      var process = mock.process(checks, mocks);
+      process.argv.length.should.equal(3);
+      process.argv[0].should.equal('node');
+      process.argv[1].should.equal('/home/blah');
+      process.argv[2].should.equal('cmd1');
+    });
+
     it('should return mock current directory when process cwd is called', function () {
       mocks = {
         process_cwd: 'somedir'
