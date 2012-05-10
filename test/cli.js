@@ -145,6 +145,93 @@ describe('cli', function () {
     });
   });
 
+  describe('parse', function () {
+
+    it('should set command details when commander module is used', function () {
+      checks.commander_actions = [];
+      checks.commander_commands = [];
+      checks.commander_descs = [];
+      checks.commander_options = [];
+      var commander = {
+        action: function (action) {
+          checks.commander_actions.push(action);
+        },
+        command: function (name) {
+          checks.commander_commands.push(name);
+          return this;
+        },
+        description: function (desc) {
+          checks.commander_descs.push(desc);
+          return this;
+        },
+        option: function (short, long, desc) {
+          checks.commander_options.push({
+            short: short,
+            long: long,
+            desc: desc
+          });
+        },
+        parse: function (argv) {
+          checks.commander_parse = argv;
+        },
+        version: function (version) {
+          checks.commander_version = version;
+        }
+      };
+      mocks = {
+        'fs_readFileSync_/app/foo/package.json': '{ "version": "1.2.3" }',
+        'process_argv': { argv: [ 'node', '/somedir', 'cmd1' ] }
+      };
+      mocks.requires = {
+        commander: commander,
+        fs: bag.mock.fs (checks, mocks)
+      };
+      cli = create(checks, mocks);
+      cli.parse({
+        cmd1: {
+          desc: 'command 1',
+          options: [
+            { short: '-a', long: '--aaa', desc: 'option a' },
+            { short: '-b', long: '--bbb', desc: 'option b' }
+          ],
+          action: function () {}
+        },
+        cmd2: {
+          desc: 'command 2',
+          options: [
+            { short: '-c', long: '--ccc', desc: 'option c' }
+          ],
+          action: function () {}
+        }
+      }, '/app/foo/bar');
+      checks.commander_commands.length.should.equal(2);
+      checks.commander_commands[0].should.equal('cmd1');
+      checks.commander_commands[1].should.equal('cmd2');
+      checks.commander_descs.length.should.equal(2);
+      checks.commander_descs[0].should.equal('command 1');
+      checks.commander_descs[1].should.equal('command 2');
+      checks.commander_options.length.should.equal(3);
+      checks.commander_options[0].short.should.equal('-a');
+      checks.commander_options[0].long.should.equal('--aaa');
+      checks.commander_options[0].desc.should.equal('option a');
+      checks.commander_options[1].short.should.equal('-b');
+      checks.commander_options[1].long.should.equal('--bbb');
+      checks.commander_options[1].desc.should.equal('option b');
+      checks.commander_options[2].short.should.equal('-c');
+      checks.commander_options[2].long.should.equal('--ccc');
+      checks.commander_options[2].desc.should.equal('option c');
+      checks.fs_readFileSync_file.should.equal('/app/foo/package.json');
+      checks.commander_version.should.equal('1.2.3');
+      checks.commander_parse.argv.length.should.equal(3);
+      checks.commander_parse.argv[0].should.equal('node');
+      checks.commander_parse.argv[1].should.equal('/somedir');
+      checks.commander_parse.argv[2].should.equal('cmd1');
+      checks.commander_actions.length.should.equal(2);
+      checks.commander_actions[0].should.be.a('function');
+      checks.commander_actions[1].should.be.a('function');
+    });
+  });
+
   describe('readConfigFileSync', function () {
     
     it('should return file content in home directory when all files exist', function () {
