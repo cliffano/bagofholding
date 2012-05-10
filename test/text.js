@@ -8,11 +8,7 @@ describe('text', function () {
 
   function create(checks, mocks) {
     return sandbox.require('../lib/text', {
-      globals: {
-        Date: function () {
-          return mocks.text_date;
-        }
-      }
+      globals: mocks ? mocks.globals : {}
     });
   }
   
@@ -48,8 +44,12 @@ describe('text', function () {
 
     it('should apply now function call when it is used in the text', function () {
       mocks = {
-        text_date: new Date(2001, 0, 1)
-      }
+        globals: {
+          Date: function () {
+            return new Date(2001, 0, 1);
+          }
+        }
+      };
       create(checks, mocks).apply('Date: {now(\'dd-mm-yyyy\')}').should.equal('Date: 01-01-2001');
     });
   });
