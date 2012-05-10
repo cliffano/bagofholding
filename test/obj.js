@@ -17,31 +17,31 @@ describe('obj', function () {
   describe('exist', function () {
 
     it('should return false when object is empty', function () {
-      obj.exist('a.b.c', {}).should.be.false;
+      obj.exist('a.b.c', {}).should.equal(false);
     });
 
     it('should return false when object is undefined', function () {
-      obj.exist('a.b.c', undefined).should.be.false;
+      obj.exist('a.b.c', undefined).should.equal(false);
     });
 
     it('should return false when dsv is empty', function () {
-      obj.exist('', { a: 'foo' }).should.be.false;
+      obj.exist('', { a: 'foo' }).should.equal(false);
     });
 
     it('should return false when dsv is undefined', function () {
-      obj.exist(undefined, { a: 'foo' }).should.be.false;
+      obj.exist(undefined, { a: 'foo' }).should.equal(false);
     });
 
     it('should return true when object contains a property', function () {
-      obj.exist('a', { a: 'foo' }).should.be.true;
+      obj.exist('a', { a: 'foo' }).should.equal(true);
     });
 
     it('should return true when object contains nested properties', function () {
-      obj.exist('a.b', { a: { b: 'foo' } }).should.be.true;
+      obj.exist('a.b', { a: { b: 'foo' } }).should.equal(true);
     });
 
     it('should return false when object does not contain nested properties', function () {
-      obj.exist('a.b.c', { a: { b: 'foo' } }).should.be.false;
+      obj.exist('a.b.c', { a: { b: 'foo' } }).should.equal(false);
     });
   });
 

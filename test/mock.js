@@ -21,10 +21,10 @@ describe('mock', function () {
         child_process_exec_err: new Error('someerror'),
         child_process_exec_stdout: 'somestdout',
         child_process_exec_stderr: 'somestderr'
-      }
+      };
       var childProcess = mock.childProcess(checks, mocks);
       childProcess.exec('somecommand', function cb(err, stdout, stderr) {
-        checks.child_process_cb_args = cb.arguments;
+        checks.child_process_cb_args = cb['arguments'];
         done();
       });
       checks.child_process_exec__args.length.should.equal(2);
@@ -122,7 +122,7 @@ describe('mock', function () {
       mock.socket(checks, {
         socket_on_someevent: ['foo', 'bar']
       }).on('someevent', function cb(arg1, arg2) {
-        checks['socket_on_someevent_cb_args'] = cb.arguments;
+        checks.socket_on_someevent_cb_args = cb['arguments'];
         done();
       });
       checks.socket_on_someevent__args.length.should.equal(2);
@@ -139,7 +139,7 @@ describe('mock', function () {
       mock.socket(checks, {
         socket_send: ['foo', 'bar']
       }).send(buffer, 0, buffer.length, 33848, 'http://host', function cb(arg1, arg2) {
-        checks['socket_send_cb_args'] = cb.arguments;
+        checks.socket_send_cb_args = cb['arguments'];
         done();
       });
       checks.socket_send__args.length.should.equal(6);

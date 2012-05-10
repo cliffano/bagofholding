@@ -34,7 +34,7 @@ describe('cli', function () {
       };
       cli = create(checks, mocks);
       cli.exec('somecommand', true, function cb(arg1, arg2) {
-        checks.child_process_exec_cb_args = cb.arguments;
+        checks.child_process_exec_cb_args = cb['arguments'];
         done();
       });
       checks.console_error_messages.length.should.equal(1);
@@ -57,7 +57,7 @@ describe('cli', function () {
       };
       cli = create(checks, mocks);
       cli.exec('somecommand', false, function cb(arg1, arg2) {
-        checks.child_process_exec_cb_args = cb.arguments;
+        checks.child_process_exec_cb_args = cb['arguments'];
         done();
       });
       checks.console_error_messages.length.should.equal(1);
@@ -77,7 +77,7 @@ describe('cli', function () {
       };
       cli = create(checks, mocks);
       cli.exec('somecommand', false, function cb(arg1, arg2) {
-        checks.child_process_exec_cb_args = cb.arguments;
+        checks.child_process_exec_cb_args = cb['arguments'];
         done();
       });
       checks.console_log_messages.length.should.equal(1);
