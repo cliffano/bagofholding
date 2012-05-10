@@ -17,5 +17,6 @@ describe('bagofholding', function () {
     should.exist(bag.cli);
     should.exist(bag.mock);
     should.exist(bag.obj);
+    should.exist(bag.text);
   });
 });
