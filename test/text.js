@@ -1,4 +1,4 @@
-var bag = require('bagofholding'),
+var bag = require('../lib/bagofholding'),
   sandbox = require('sandboxed-module'),
   should = require('should'),
   checks, mocks;
