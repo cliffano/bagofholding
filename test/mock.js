@@ -37,6 +37,62 @@ describe('mock', function () {
     });
   });
 
+  describe('commander', function () {
+
+    it('should register action functions when action is called multiple times', function () {
+      var commander = mock.commander(checks, mocks);
+      commander.action(function () {});
+      commander.action(function () {});
+      checks.commander_actions.length.should.equal(2);
+      checks.commander_actions[0].should.be.a('function');
+      checks.commander_actions[1].should.be.a('function');
+    });
+
+    it('should register command names when command is called multiple times in a chain', function () {
+      var commander = mock.commander(checks, mocks);
+      commander.command('cmd1').command('cmd2');
+      checks.commander_commands.length.should.equal(2);
+      checks.commander_commands[0].should.equal('cmd1');
+      checks.commander_commands[1].should.equal('cmd2');
+    });
+
+    it('should register descriptions when description is called multiple times in a chain', function () {
+      var commander = mock.commander(checks, mocks);
+      commander.description('command 1').description('command 2');
+      checks.commander_descs.length.should.equal(2);
+      checks.commander_descs[0].should.equal('command 1');
+      checks.commander_descs[1].should.equal('command 2');
+    });
+
+    it('should register option details when option is called multiple times', function () {
+      var commander = mock.commander(checks, mocks);
+      commander.option('-a', '--aa', 'aaa');
+      commander.option('-b', '--bb', 'bbb');
+      checks.commander_options.length.should.equal(2);
+      checks.commander_options[0].short.should.equal('-a');
+      checks.commander_options[0].long.should.equal('--aa');
+      checks.commander_options[0].desc.should.equal('aaa');
+      checks.commander_options[1].short.should.equal('-b');
+      checks.commander_options[1].long.should.equal('--bb');
+      checks.commander_options[1].desc.should.equal('bbb');
+    });
+
+    it('should set process arguments when parse is called', function () {
+      var commander = mock.commander(checks, mocks);
+      commander.parse(['node', '/somedir', 'cmd1']);
+      checks.commander_parse.length.should.equal(3);
+      checks.commander_parse[0].should.equal('node');
+      checks.commander_parse[1].should.equal('/somedir');
+      checks.commander_parse[2].should.equal('cmd1');
+    });
+
+    it('should set version number when version is called', function () {
+      var commander = mock.commander(checks, mocks);
+      commander.version('1.2.3');
+      checks.commander_version.should.equal('1.2.3');
+    });
+  });
+
   describe('console', function () {
 
     it('should set message when console error is called', function () {

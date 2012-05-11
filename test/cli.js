@@ -148,42 +148,12 @@ describe('cli', function () {
   describe('parse', function () {
 
     it('should set command details when commander module is used', function () {
-      checks.commander_actions = [];
-      checks.commander_commands = [];
-      checks.commander_descs = [];
-      checks.commander_options = [];
-      var commander = {
-        action: function (action) {
-          checks.commander_actions.push(action);
-        },
-        command: function (name) {
-          checks.commander_commands.push(name);
-          return this;
-        },
-        description: function (desc) {
-          checks.commander_descs.push(desc);
-          return this;
-        },
-        option: function (short, long, desc) {
-          checks.commander_options.push({
-            short: short,
-            long: long,
-            desc: desc
-          });
-        },
-        parse: function (argv) {
-          checks.commander_parse = argv;
-        },
-        version: function (version) {
-          checks.commander_version = version;
-        }
-      };
       mocks = {
         'fs_readFileSync_/app/foo/package.json': '{ "version": "1.2.3" }',
         'process_argv': { argv: [ 'node', '/somedir', 'cmd1' ] }
       };
       mocks.requires = {
-        commander: commander,
+        commander: bag.mock.commander(checks, mocks),
         fs: bag.mock.fs (checks, mocks)
       };
       cli = create(checks, mocks);
