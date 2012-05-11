@@ -26,8 +26,3 @@ Usage
     bag.text.*; // string manipulation utilities
 
 Check out the source code for a list of functions available for use.
-
-Colophon
---------
-
-Follow [@cliffano](http://twitter.com/cliffano) on Twitter.
