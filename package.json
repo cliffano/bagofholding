@@ -1,9 +1,8 @@
 {
   "name": "bagofholding",
   "description": "An uncursed bag of various Node.js utility functions.",
-  "keywords": [
-  ],
-  "version": "0.0.1",
+  "keywords": [],
+  "version": "0.0.2",
   "homepage": "http://github.com/cliffano/bagofholding",
   "author": "Cliffano Subagio <blah@cliffano.com> (http://blog.cliffano.com)",
   "main": "./lib/bagofholding",
