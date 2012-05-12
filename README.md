@@ -3,7 +3,7 @@ Bag Of Holding [![http://travis-ci.org/cliffano/bagofholding](https://secure.tra
 
 Bag Of Holding is an uncursed bag of various Node.js utility functions.
 
-It contains common functions used in various cliffano/* modules.
+This is an extract of the repetitive parts from various Node.js modules I've written. It contains convenient utilities for command-line tools, unit test mock objects, and data manipulation.
 
 Installation
 ------------
@@ -20,9 +20,9 @@ Usage
 -----
 
     var bag = require('bagofholding');
-    bag.cli.*; // command-line tools utilities
-    bag.mock.*; // mock IO-related Node.js API
-    bag.obj.*; // object manipulation utilities
-    bag.text.*; // string manipulation utilities
+    bag.cli.*;
+    bag.mock.*;
+    bag.obj.*;
+    bag.text.*;
 
 Check out the source code for a list of functions available for use.
