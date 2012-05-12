@@ -10,7 +10,7 @@ Installation
 
     npm install bagofholding
 
-or specify it as a dependency in package.json file:
+or specify as a dependency in package.json file:
 
     "dependencies": {
       "bagofholding": "x.y.z"
