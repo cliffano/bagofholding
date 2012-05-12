@@ -3,14 +3,14 @@ Bag Of Holding [![http://travis-ci.org/cliffano/bagofholding](https://secure.tra
 
 Bag Of Holding is an uncursed bag of various Node.js utility functions.
 
-This is an extract of the repetitive parts from various Node.js modules I've written. It contains convenient utilities for command-line tools, unit test mock objects, and data manipulation.
+This is an extract of the reusable parts from various Node.js modules I've written. It contains convenient utilities for command-line tools, unit test mock functions, and data manipulation.
 
 Installation
 ------------
 
     npm install bagofholding
 
-or specify as a dependency in package.json file:
+or as a dependency in package.json file:
 
     "dependencies": {
       "bagofholding": "x.y.z"
