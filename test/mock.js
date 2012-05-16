@@ -282,6 +282,11 @@ describe('mock', function () {
       checks.socket_on_someevent_cb_args[1].should.equal('bar');
     });
 
+    it('should not emit event when mock event data is not specified', function () {
+      mock.socket(checks, mocks).on('someevent', function cb() {});
+      should.not.exist(checks.socket_on_someevent__args);
+    });
+
     it('should call callback with correct mock arguments when socket send is called', function (done) {
 
       var buffer = new Buffer('somemessage');
