@@ -134,6 +134,88 @@ describe('mock', function () {
     });
   });
 
+  describe('httpReq', function () {
+
+    it('should count how many times httpReq close is called', function () {
+      var httpReq = mock.httpReq(checks);
+      should.not.exist(checks.httpreq_end__count);
+      httpReq.end();
+      checks.httpreq_end__count.should.equal(1);
+      httpReq.end();
+      httpReq.end();
+      httpReq.end();
+      httpReq.end();
+      checks.httpreq_end__count.should.equal(5);
+    });
+
+    it('should call callback with correct mock arguments when httpReq event is called', function (done) {
+
+      mock.httpReq(checks, {
+        httpreq_on_someevent: ['foo', 'bar']
+      }).on('someevent', function cb(arg1, arg2) {
+        checks.httpreq_on_someevent_cb_args = cb['arguments'];
+        done();
+      });
+      checks.httpreq_on_someevent__args.length.should.equal(2);
+      checks.httpreq_on_someevent__args[0].should.equal('someevent');
+      checks.httpreq_on_someevent__args[1].should.be.a('function');
+      checks.httpreq_on_someevent_cb_args.length.should.equal(2);
+      checks.httpreq_on_someevent_cb_args[0].should.equal('foo');
+      checks.httpreq_on_someevent_cb_args[1].should.equal('bar');
+    });
+  });
+
+  describe('httpRes', function () {
+
+    it('should count how many times httpRes close is called', function () {
+      var httpRes = mock.httpRes(checks);
+      should.not.exist(checks.httpres_end__count);
+      httpRes.end();
+      checks.httpres_end__count.should.equal(1);
+      httpRes.end();
+      httpRes.end();
+      httpRes.end();
+      httpRes.end();
+      checks.httpres_end__count.should.equal(5);
+    });
+
+    it('should return mock headers when httpRes statusCode is called', function () {
+      mocks.httpres_headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      };
+      var httpRes = mock.httpRes(checks, mocks);
+      httpRes.headers['Content-Type'].should.equal('application/x-www-form-urlencoded');
+    });
+
+    it('should call callback with correct mock arguments when httpRes event is called', function (done) {
+
+      mock.httpRes(checks, {
+        httpres_on_someevent: ['foo', 'bar']
+      }).on('someevent', function cb(arg1, arg2) {
+        checks.httpres_on_someevent_cb_args = cb['arguments'];
+        done();
+      });
+      checks.httpres_on_someevent__args.length.should.equal(2);
+      checks.httpres_on_someevent__args[0].should.equal('someevent');
+      checks.httpres_on_someevent__args[1].should.be.a('function');
+      checks.httpres_on_someevent_cb_args.length.should.equal(2);
+      checks.httpres_on_someevent_cb_args[0].should.equal('foo');
+      checks.httpres_on_someevent_cb_args[1].should.equal('bar');
+    });
+
+    it('should set encoding value when setEncoding is called', function () {
+      var httpRes = mock.httpRes(checks, mocks);
+      httpRes.setEncoding('utf-8');
+      checks.httpres_setencoding_encoding.should.equal('utf-8');
+    });
+
+    it('should return mock status code when httpRes statusCode is called', function () {
+      mocks.httpres_statuscode = 503;
+      var httpRes = mock.httpRes(checks, mocks);
+      httpRes.statusCode.should.equal(503);
+    });
+  });
+
   describe('process', function () {
 
     it('should return mock process arguments when process argv is called', function () {
