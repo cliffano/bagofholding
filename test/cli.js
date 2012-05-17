@@ -204,9 +204,23 @@ describe('cli', function () {
 
   describe('readConfigFileSync', function () {
     
-    it('should return file content in home directory when all files exist', function () {
+    it('should return file content in home directory when all files exist and platform is non-windows', function () {
       mocks = {
         process_env: { HOME: '/home/blah' },
+        process_cwd: '/curr/dir',
+        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent',
+        'fs_readFileSync_/curr/dir/.conf.json': 'currdirfilecontent'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
+      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
+    });
+
+    it('should return file content in home directory when all files exist and platform is windows', function () {
+      mocks = {
+        process_platform: 'win32',
+        process_env: { USERPROFILE: '/home/blah' },
         process_cwd: '/curr/dir',
         'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent',
         'fs_readFileSync_/curr/dir/.conf.json': 'currdirfilecontent'

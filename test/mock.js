@@ -250,6 +250,14 @@ describe('mock', function () {
       process.exit(1);
       checks.process_exit_code.should.equal(1);
     });
+
+    it('should return mock platform when process platform is called', function () {
+      mocks = {
+        process_platform: 'win32'
+      };
+      var process = mock.process(checks, mocks);
+      process.platform.should.equal('win32');
+    });
   });
 
   describe('socket', function () {
