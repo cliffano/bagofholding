@@ -1,4 +1,7 @@
-### 0.0.2 (SNAPSHOT)
+### 0.0.3 (SNAPSHOT)
+*
+
+### 0.0.2
 * Add mock http request and response
 * Add mock process platform
 * Add Windows support for cli readConfigFileSync, should identify home directory properly now 
