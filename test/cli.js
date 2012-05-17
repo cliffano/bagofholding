@@ -204,7 +204,7 @@ describe('cli', function () {
 
   describe('readConfigFileSync', function () {
     
-    it('should return file content in home directory when all files exist and platform is non-windows', function () {
+    it('should return file content in current directory when all files exist and platform is non-windows', function () {
       mocks = {
         process_env: { HOME: '/home/blah' },
         process_cwd: '/curr/dir',
@@ -213,8 +213,8 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
+      cli.readConfigFileSync('.conf.json').should.equal('currdirfilecontent');
+      checks.fs_readFileSync_file.should.equal('/curr/dir/.conf.json');
     });
 
     it('should return file content in current directory when it exists but none exists in home directory', function () {
@@ -265,9 +265,9 @@ describe('cli', function () {
         cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
         should.fail('an error should\'ve been thrown');
       } catch (err) {
-        err.message.should.equal('Unable to find configuration file in /home/blah/.conf.json, /curr/dir/.conf.json');
+        err.message.should.equal('Unable to find configuration file in /curr/dir/.conf.json, /home/blah/.conf.json');
       }
-      checks.fs_readFileSync_file.should.equal('/curr/dir/.conf.json');
+      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
     });
   });
 });
