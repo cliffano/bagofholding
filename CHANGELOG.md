@@ -1,4 +1,7 @@
-### 0.0.3 (SNAPSHOT)
+### 0.0.4 (SNAPSHOT)
+*
+
+### 0.0.3
 * Modify cli readConfigFileSync, config file in current directory should take precedence over the one in home directory
 
 ### 0.0.2
