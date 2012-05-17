@@ -217,21 +217,7 @@ describe('cli', function () {
       checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
     });
 
-    it('should return file content in home directory when all files exist and platform is windows', function () {
-      mocks = {
-        process_platform: 'win32',
-        process_env: { USERPROFILE: '/home/blah' },
-        process_cwd: '/curr/dir',
-        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent',
-        'fs_readFileSync_/curr/dir/.conf.json': 'currdirfilecontent'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
-    });
-
-    it('should return file content in current directory when it exists but not in home directory', function () {
+    it('should return file content in current directory when it exists but none exists in home directory', function () {
       mocks = {
         process_env: { HOME: '/home/blah' },
         process_cwd: '/curr/dir',
@@ -241,6 +227,31 @@ describe('cli', function () {
       cli = create(checks, mocks);
       cli.readConfigFileSync('.conf.json').should.equal('currdirfilecontent');
       checks.fs_readFileSync_file.should.equal('/curr/dir/.conf.json');
+    });
+
+    it('should return file content in home directory when it exists but none exists in current directory and platform is non-windows', function () {
+      mocks = {
+        process_env: { HOME: '/home/blah' },
+        process_cwd: '/curr/dir',
+        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
+      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
+    });
+
+    it('should return file content in home directory when it exists but none exists in current directory and platform is windows', function () {
+      mocks = {
+        process_platform: 'win32',
+        process_env: { USERPROFILE: '/home/blah' },
+        process_cwd: '/curr/dir',
+        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
+      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
     });
 
     it('should throw an error when configuration file does not exist anywhere', function () {
