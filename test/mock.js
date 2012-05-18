@@ -98,15 +98,19 @@ describe('mock', function () {
     it('should set message when console error is called', function () {
       var console = mock.console(checks);
       console.error('some error');
-      checks.console_error_messages.length.should.equal(1);
+      console.error('foo %s', 'bar');
+      checks.console_error_messages.length.should.equal(2);
       checks.console_error_messages[0].should.equal('some error');
+      checks.console_error_messages[1].should.equal('foo bar');
     });
 
     it('should set message when console log is called', function () {
       var console = mock.console(checks);
       console.log('some log');
-      checks.console_log_messages.length.should.equal(1);
+      console.log('foo %s', 'bar');
+      checks.console_log_messages.length.should.equal(2);
       checks.console_log_messages[0].should.equal('some log');
+      checks.console_log_messages[1].should.equal('foo bar');
     });
   });
 

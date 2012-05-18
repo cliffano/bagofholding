@@ -1,5 +1,5 @@
 ### 0.0.4 (SNAPSHOT)
-*
+* Mock console error and log now simulates %s, %d, %j
 
 ### 0.0.3
 * Modify cli readConfigFileSync, config file in current directory should take precedence over the one in home directory
