@@ -264,6 +264,41 @@ describe('mock', function () {
     });
   });
 
+  describe('request', function () {
+
+    it('should set request options value when request is called', function () {
+      mock.request(checks, mocks)({ method: 'get', uri: 'http://localhost:8080'}, function () {});
+      checks.request_opts.method.should.equal('get');
+      checks.request_opts.uri.should.equal('http://localhost:8080');
+    });
+
+    it('should pass error to callback when mock error exists', function (done) {
+      mocks = {
+        request_err: new Error('someerror')
+      };
+      mock.request(checks, mocks)({ method: 'get', uri: 'http://localhost:8080'}, function (err, result) {
+        checks.request_err = err;
+        checks.request_result = result;
+        done();
+      });
+      checks.request_err.message.should.equal('someerror');
+      should.not.exist(checks.request_result);
+    });
+
+    it('should not pass any error to callback when mock error does not exist', function (done) {
+      mocks = {
+        request_result: 'someresult'
+      };
+      mock.request(checks, mocks)({ method: 'get', uri: 'http://localhost:8080'}, function (err, result) {
+        checks.request_err = err;
+        checks.request_result = result;
+        done();
+      });
+      should.not.exist(checks.request_err);
+      checks.request_result.should.equal('someresult');
+    });
+  });
+
   describe('socket', function () {
 
     it('should count how many times socket close is called', function () {

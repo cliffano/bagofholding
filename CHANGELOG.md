@@ -1,5 +1,5 @@
 ### 0.0.5 (SNAPSHOT)
-*
+* Add mock request
 
 ### 0.0.4
 * Mock console error and log now simulates %s, %d, %j
