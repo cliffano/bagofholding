@@ -1,9 +1,9 @@
-Overview [![http://travis-ci.org/cliffano/bagofholding](https://secure.travis-ci.org/cliffano/bagofholding.png?branch=master)](http://travis-ci.org/cliffano/bagofholding)
---------
+Bag Of Holding [![http://travis-ci.org/cliffano/bagofholding](https://secure.travis-ci.org/cliffano/bagofholding.png?branch=master)](http://travis-ci.org/cliffano/bagofholding)
+--------------
 
-Bag Of Holding is an uncursed bag of various Node.js utility functions.
+An uncursed bag of various Node.js utility functions.
 
-It is an extract of the reusable parts from various Node.js modules I've written. It contains convenient utilities for command-line tools, unit test mock functions, and data manipulation.
+This is an extract of the reusable parts from various Node.js modules I've written. It contains convenient utilities for command-line tools, unit test mock functions, and data manipulation.
 
 Mostly for internal use.
 
