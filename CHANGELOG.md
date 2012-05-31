@@ -1,5 +1,5 @@
 ### 0.0.6 (SNAPSHOT)
-*
+* Fix cli#parse option argument handling
 
 ### 0.0.5
 * Add mock request

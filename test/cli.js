@@ -161,15 +161,15 @@ describe('cli', function () {
         cmd1: {
           desc: 'command 1',
           options: [
-            { short: '-a', long: '--aaa', desc: 'option a' },
-            { short: '-b', long: '--bbb', desc: 'option b' }
+            { arg: '-a, --aaa <foo>', desc: 'option a' },
+            { arg: '-b, --bbb <bar>', desc: 'option b' }
           ],
           action: function () {}
         },
         cmd2: {
           desc: 'command 2',
           options: [
-            { short: '-c', long: '--ccc', desc: 'option c' }
+            { arg: '-c, --ccc <xyz>', desc: 'option c' }
           ],
           action: function () {}
         }
@@ -181,14 +181,11 @@ describe('cli', function () {
       checks.commander_descs[0].should.equal('command 1');
       checks.commander_descs[1].should.equal('command 2');
       checks.commander_options.length.should.equal(3);
-      checks.commander_options[0].short.should.equal('-a');
-      checks.commander_options[0].long.should.equal('--aaa');
+      checks.commander_options[0].arg.should.equal('-a, --aaa <foo>');
       checks.commander_options[0].desc.should.equal('option a');
-      checks.commander_options[1].short.should.equal('-b');
-      checks.commander_options[1].long.should.equal('--bbb');
+      checks.commander_options[1].arg.should.equal('-b, --bbb <bar>');
       checks.commander_options[1].desc.should.equal('option b');
-      checks.commander_options[2].short.should.equal('-c');
-      checks.commander_options[2].long.should.equal('--ccc');
+      checks.commander_options[2].arg.should.equal('-c, --ccc <xyz>');
       checks.commander_options[2].desc.should.equal('option c');
       checks.fs_readFileSync_file.should.equal('/app/foo/package.json');
       checks.commander_version.should.equal('1.2.3');

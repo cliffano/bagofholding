@@ -66,14 +66,12 @@ describe('mock', function () {
 
     it('should register option details when option is called multiple times', function () {
       var commander = mock.commander(checks, mocks);
-      commander.option('-a', '--aa', 'aaa');
-      commander.option('-b', '--bb', 'bbb');
+      commander.option('-a, --aa <foo>', 'aaa');
+      commander.option('-b, --bb <bar>', 'bbb');
       checks.commander_options.length.should.equal(2);
-      checks.commander_options[0].short.should.equal('-a');
-      checks.commander_options[0].long.should.equal('--aa');
+      checks.commander_options[0].arg.should.equal('-a, --aa <foo>');
       checks.commander_options[0].desc.should.equal('aaa');
-      checks.commander_options[1].short.should.equal('-b');
-      checks.commander_options[1].long.should.equal('--bb');
+      checks.commander_options[1].arg.should.equal('-b, --bb <bar>');
       checks.commander_options[1].desc.should.equal('bbb');
     });
 
