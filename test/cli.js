@@ -161,7 +161,7 @@ describe('cli', function () {
         cmd1: {
           desc: 'command 1',
           options: [
-            { arg: '-a, --aaa <foo>', desc: 'option a' },
+            { arg: '-a, --aaa <foo>', desc: 'option a', action: function () {} },
             { arg: '-b, --bbb <bar>', desc: 'option b' }
           ],
           action: function () {}
@@ -183,10 +183,13 @@ describe('cli', function () {
       checks.commander_options.length.should.equal(3);
       checks.commander_options[0].arg.should.equal('-a, --aaa <foo>');
       checks.commander_options[0].desc.should.equal('option a');
+      checks.commander_options[0].action.should.be.a('function');
       checks.commander_options[1].arg.should.equal('-b, --bbb <bar>');
       checks.commander_options[1].desc.should.equal('option b');
+      should.not.exist(checks.commander_options[1].action);
       checks.commander_options[2].arg.should.equal('-c, --ccc <xyz>');
       checks.commander_options[2].desc.should.equal('option c');
+      should.not.exist(checks.commander_options[2].action);
       checks.fs_readFileSync_file.should.equal('/app/foo/package.json');
       checks.commander_version.should.equal('1.2.3');
       checks.commander_parse.argv.length.should.equal(3);

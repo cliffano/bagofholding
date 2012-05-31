@@ -66,13 +66,15 @@ describe('mock', function () {
 
     it('should register option details when option is called multiple times', function () {
       var commander = mock.commander(checks, mocks);
-      commander.option('-a, --aa <foo>', 'aaa');
-      commander.option('-b, --bb <bar>', 'bbb');
+      commander.option('-a, --aa <foo>', 'aaa', function () {});
+      commander.option('-b, --bb <bar>', 'bbb', function () {});
       checks.commander_options.length.should.equal(2);
       checks.commander_options[0].arg.should.equal('-a, --aa <foo>');
       checks.commander_options[0].desc.should.equal('aaa');
+      checks.commander_options[0].action.should.be.a('function');
       checks.commander_options[1].arg.should.equal('-b, --bb <bar>');
       checks.commander_options[1].desc.should.equal('bbb');
+      checks.commander_options[1].action.should.be.a('function');
     });
 
     it('should set process arguments when parse is called', function () {
