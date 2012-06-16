@@ -1,5 +1,6 @@
 ### 0.0.7 (SNAPSHOT)
 * Add mock#childProcess fork
+* Add mock#process pid
 
 ### 0.0.6
 * Fix cli#parse option argument handling

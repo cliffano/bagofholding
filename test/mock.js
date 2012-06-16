@@ -267,6 +267,14 @@ describe('mock', function () {
       checks.process_exit_code.should.equal(1);
     });
 
+    it('should return mock process ID when process pid is called', function () {
+      mocks = {
+        process_pid: 12345
+      };
+      var process = mock.process(checks, mocks);
+      process.pid.should.equal(12345);
+    });
+
     it('should return mock platform when process platform is called', function () {
       mocks = {
         process_platform: 'win32'
