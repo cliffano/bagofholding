@@ -1,5 +1,5 @@
 ### 0.0.7 (SNAPSHOT)
-*
+* Add mock#childProcess fork
 
 ### 0.0.6
 * Fix cli#parse option argument handling

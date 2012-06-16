@@ -16,7 +16,7 @@ describe('mock', function () {
 
   describe('childProcess', function () {
 
-    it('should ', function (done) {
+    it('should call callback with mock error, stdout, and stderr when exec is called', function (done) {
       mocks = {
         child_process_exec_err: new Error('someerror'),
         child_process_exec_stdout: 'somestdout',
@@ -34,6 +34,18 @@ describe('mock', function () {
       checks.child_process_cb_args[0].message.should.equal('someerror');
       checks.child_process_cb_args[1].should.equal('somestdout');
       checks.child_process_cb_args[2].should.equal('somestderr');
+    });
+
+    it('should register messages when child process fork\'s send is called', function () {
+      var childProcess = mock.childProcess(checks, mocks),
+        fork = childProcess.fork('/path/to/somemodule.js');
+      checks.child_process_fork__args.length.should.equal(1);
+      checks.child_process_fork__args[0].should.equal('/path/to/somemodule.js');
+      fork.send('somemessage');
+      fork.send({ foo: 'bar' });
+      checks.child_process_fork_sends.length.should.equal(2);
+      checks.child_process_fork_sends[0].should.equal('somemessage');
+      checks.child_process_fork_sends[1].foo.should.equal('bar');
     });
   });
 
