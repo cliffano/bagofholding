@@ -1,4 +1,7 @@
-### 0.0.6 (SNAPSHOT)
+### 0.0.7 (SNAPSHOT)
+*
+
+### 0.0.6
 * Fix cli#parse option argument handling
 * Add cli#parse option action callback
 
