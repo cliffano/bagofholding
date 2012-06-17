@@ -374,4 +374,55 @@ describe('mock', function () {
       checks.socket_send_cb_args[1].should.equal('bar');
     });
   });
+
+  describe('stream', function () {
+
+    it('should add string to stream when end is called once', function () {
+      var stream = mock.stream(checks, mocks);
+      stream.end('foo');
+      checks.stream_end_string.should.equal('foo');
+    });
+
+    it('should throw error when end is called more than once', function (done) {
+      var stream = mock.stream(checks, mocks);
+      stream.end('foo');
+      try {
+        stream.end('foo');
+      } catch (err) {
+        err.message.should.equal('stream#end can only be called once');
+        done();
+      }
+    });
+
+    it('should call callback with correct mock arguments when socket event is called', function (done) {
+      mock.stream(checks, {
+        stream_on_someevent: ['foo', 'bar']
+      }).on('someevent', function cb(arg1, arg2) {
+        checks.stream_on_someevent_cb_args = cb['arguments'];
+        done();
+      });
+      checks.stream_on_someevent__args.length.should.equal(2);
+      checks.stream_on_someevent__args[0].should.equal('someevent');
+      checks.stream_on_someevent__args[1].should.be.a('function');
+      checks.stream_on_someevent_cb_args.length.should.equal(2);
+      checks.stream_on_someevent_cb_args[0].should.equal('foo');
+      checks.stream_on_someevent_cb_args[1].should.equal('bar');
+    });
+
+    it('should not emit event when mock event data is not specified', function () {
+      mock.stream(checks, mocks).on('someevent', function cb() {});
+      should.not.exist(checks.stream_on_someevent__args);
+    });
+
+    it('should add string to stream when write is called', function () {
+      var stream = mock.stream(checks, mocks);
+      stream.write('foo');
+      stream.write('bar');
+      stream.write('xyz');
+      checks.stream_write_strings.length.should.equal(3);
+      checks.stream_write_strings[0].should.equal('foo');
+      checks.stream_write_strings[1].should.equal('bar');
+      checks.stream_write_strings[2].should.equal('xyz');
+    });
+  });
 });
