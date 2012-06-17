@@ -1,5 +1,6 @@
 ### 0.0.8 (SNAPSHOT)
 * Add mock#stream 
+# Add mock#fs createWriteStream
 
 ### 0.0.7
 * Add mock#childProcess fork

@@ -128,6 +128,15 @@ describe('mock', function () {
 
   describe('fs', function () {
 
+    it('should return mock stream when createWriteStream is called', function () {
+      mocks.fs_createWriteStream = 'somestream';
+      var fs = mock.fs(checks, mocks);
+      fs.createWriteStream('/path/to/somefile', { flags: 'w', encoding: 'utf-8' }).should.equal('somestream');
+      checks.fs_createWriteStream_path.should.equal('/path/to/somefile');
+      checks.fs_createWriteStream_opts.flags.should.equal('w');
+      checks.fs_createWriteStream_opts.encoding.should.equal('utf-8');
+    });
+
     it('should return mock file when an existing file is read', function () {
       mocks = {
         'fs_readFileSync_someexistingfile': 'somefilecontent'
