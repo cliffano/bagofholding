@@ -291,6 +291,26 @@ describe('mock', function () {
       var process = mock.process(checks, mocks);
       process.platform.should.equal('win32');
     });
+
+    it('should call callback with correct mock arguments when process event is called', function (done) {
+      mock.process(checks, {
+        process_on_someevent: ['foo', 'bar']
+      }).on('someevent', function cb(arg1, arg2) {
+        checks.process_on_someevent_cb_args = cb['arguments'];
+        done();
+      });
+      checks.process_on_someevent__args.length.should.equal(2);
+      checks.process_on_someevent__args[0].should.equal('someevent');
+      checks.process_on_someevent__args[1].should.be.a('function');
+      checks.process_on_someevent_cb_args.length.should.equal(2);
+      checks.process_on_someevent_cb_args[0].should.equal('foo');
+      checks.process_on_someevent_cb_args[1].should.equal('bar');
+    });
+
+    it('should not emit event when mock event data is not specified', function () {
+      mock.process(checks, mocks).on('someevent', function cb() {});
+      should.not.exist(checks.process_on_someevent__args);
+    });
   });
 
   describe('request', function () {
