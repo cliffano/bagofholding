@@ -4,6 +4,7 @@
 # Add mock#process on
 # Remove {now()} template function from text#apply, more appropriate location in the userland
 # Add text#applyPrecompiled
+# Add text#compile
 
 ### 0.0.7
 * Add mock#childProcess fork

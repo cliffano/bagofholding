@@ -36,6 +36,13 @@ describe('text', function () {
     });
   });
 
+  describe('compile', function () {
+
+    it('should return compiled text', function () {
+      text.compile('Hello world').should.be.a('object');
+    });
+  });
+
   describe('apply', function () {
 
     it('should return original text when it does not have any params', function () {
