@@ -2,6 +2,8 @@
 * Add mock#stream 
 # Add mock#fs createWriteStream
 # Add mock#process on
+# Remove {now()} template function from text#apply, more appropriate location in the userland
+# Add text#applyPrecompiled
 
 ### 0.0.7
 * Add mock#childProcess fork
