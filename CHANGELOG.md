@@ -1,4 +1,7 @@
-### 0.0.8 (SNAPSHOT)
+### 0.0.9 (SNAPSHOT)
+*
+
+### 0.0.8
 * Add mock#stream 
 # Add mock#fs createWriteStream
 # Add mock#process on
