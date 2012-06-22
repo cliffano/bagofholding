@@ -453,5 +453,14 @@ describe('mock', function () {
       checks.stream_write_strings[1].should.equal('bar');
       checks.stream_write_strings[2].should.equal('xyz');
     });
+
+    it('should return mock status when write is called', function () {
+      var stream = mock.stream(checks, mocks);
+      mocks.stream_write_status = true;
+      stream.write('foo').should.equal(true);
+      stream.write('bar').should.equal(true);
+      mocks.stream_write_status = false;
+      stream.write('xyz').should.equal(false);
+    });
   });
 });
