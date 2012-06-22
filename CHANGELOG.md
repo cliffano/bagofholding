@@ -1,4 +1,7 @@
-### 0.0.9 (SNAPSHOT)
+### 0.0.10 (SNAPSHOT)
+*
+
+### 0.0.9
 * Modify mock#stream write to return status
 
 ### 0.0.8
