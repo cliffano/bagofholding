@@ -1,5 +1,5 @@
 ### 0.0.10 (SNAPSHOT)
-*
+* Set max node engine to < 0.9.0 
 
 ### 0.0.9
 * Modify mock#stream write to return status
