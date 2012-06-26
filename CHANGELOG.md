@@ -1,4 +1,7 @@
-### 0.0.10 (SNAPSHOT)
+### 0.0.11 (SNAPSHOT)
+* 
+
+### 0.0.10
 * Set max node engine to < 0.9.0 
 
 ### 0.0.9
