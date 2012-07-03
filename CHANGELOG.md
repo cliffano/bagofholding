@@ -1,4 +1,7 @@
-### 0.0.11 (SNAPSHOT)
+### 0.0.12 (SNAPSHOT)
+*
+
+### 0.0.11
 * Add mock#process nextTick and stdout
 
 ### 0.0.10
