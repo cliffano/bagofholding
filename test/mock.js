@@ -276,6 +276,19 @@ describe('mock', function () {
       checks.process_exit_code.should.equal(1);
     });
 
+    it('should cal callback with correct mock arguments when process nextTick is called', function (done) {
+      mock.process(checks, {
+        process_nextTick: ['foo', 'bar']
+      }).nextTick(function cb(arg1, arg2) {
+        checks.process_nextTick_cb_args = cb['arguments'];
+        done();
+      });
+      checks.process_nextTick_cb.should.be.a('function');
+      checks.process_nextTick_cb_args.length.should.equal(2);
+      checks.process_nextTick_cb_args[0].should.equal('foo');
+      checks.process_nextTick_cb_args[1].should.equal('bar');
+    });
+
     it('should return mock process ID when process pid is called', function () {
       mocks = {
         process_pid: 12345
@@ -310,6 +323,12 @@ describe('mock', function () {
     it('should not emit event when mock event data is not specified', function () {
       mock.process(checks, mocks).on('someevent', function cb() {});
       should.not.exist(checks.process_on_someevent__args);
+    });
+
+    it('should return a stream when stdout is called', function () {
+      mock.process(checks, mocks).stdout.should.have.property('end');
+      mock.process(checks, mocks).stdout.should.have.property('on');
+      mock.process(checks, mocks).stdout.should.have.property('write');
     });
   });
 

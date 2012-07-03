@@ -1,5 +1,5 @@
 ### 0.0.11 (SNAPSHOT)
-* 
+* Add mock#process nextTick and stdout
 
 ### 0.0.10
 * Set max node engine to < 0.9.0 
