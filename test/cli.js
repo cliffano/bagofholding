@@ -158,38 +158,49 @@ describe('cli', function () {
       };
       cli = create(checks, mocks);
       cli.parse({
-        cmd1: {
-          desc: 'command 1',
-          options: [
-            { arg: '-a, --aaa <foo>', desc: 'option a', action: function () {} },
-            { arg: '-b, --bbb <bar>', desc: 'option b' }
-          ],
-          action: function () {}
+          cmd1: {
+            desc: 'command 1',
+            options: [
+              { arg: '-a, --aaa <foo>', desc: 'option a', action: function () {} },
+              { arg: '-b, --bbb <bar>', desc: 'option b' }
+            ],
+            action: function () {}
+          },
+          cmd2: {
+            desc: 'command 2',
+            options: [
+              { arg: '-c, --ccc <xyz>', desc: 'option c' }
+            ],
+            action: function () {}
+          }
         },
-        cmd2: {
-          desc: 'command 2',
-          options: [
-            { arg: '-c, --ccc <xyz>', desc: 'option c' }
-          ],
-          action: function () {}
-        }
-      }, '/app/foo/bar');
+        '/app/foo/bar',
+        [
+          { arg: '-h, --hhh <abc>', desc: 'option h', action: function () {} },
+          { arg: '-i, --iii <xyz>', desc: 'option i' }
+        ]);
       checks.commander_commands.length.should.equal(2);
       checks.commander_commands[0].should.equal('cmd1');
       checks.commander_commands[1].should.equal('cmd2');
       checks.commander_descs.length.should.equal(2);
       checks.commander_descs[0].should.equal('command 1');
       checks.commander_descs[1].should.equal('command 2');
-      checks.commander_options.length.should.equal(3);
-      checks.commander_options[0].arg.should.equal('-a, --aaa <foo>');
-      checks.commander_options[0].desc.should.equal('option a');
+      checks.commander_options.length.should.equal(5);
+      checks.commander_options[0].arg.should.equal('-h, --hhh <abc>');
+      checks.commander_options[0].desc.should.equal('option h');
       checks.commander_options[0].action.should.be.a('function');
-      checks.commander_options[1].arg.should.equal('-b, --bbb <bar>');
-      checks.commander_options[1].desc.should.equal('option b');
+      checks.commander_options[1].arg.should.equal('-i, --iii <xyz>');
+      checks.commander_options[1].desc.should.equal('option i');
       should.not.exist(checks.commander_options[1].action);
-      checks.commander_options[2].arg.should.equal('-c, --ccc <xyz>');
-      checks.commander_options[2].desc.should.equal('option c');
-      should.not.exist(checks.commander_options[2].action);
+      checks.commander_options[2].arg.should.equal('-a, --aaa <foo>');
+      checks.commander_options[2].desc.should.equal('option a');
+      checks.commander_options[2].action.should.be.a('function');
+      checks.commander_options[3].arg.should.equal('-b, --bbb <bar>');
+      checks.commander_options[3].desc.should.equal('option b');
+      should.not.exist(checks.commander_options[3].action);
+      checks.commander_options[4].arg.should.equal('-c, --ccc <xyz>');
+      checks.commander_options[4].desc.should.equal('option c');
+      should.not.exist(checks.commander_options[4].action);
       checks.fs_readFileSync_file.should.equal('/app/foo/package.json');
       checks.commander_version.should.equal('1.2.3');
       checks.commander_parse.argv.length.should.equal(3);
