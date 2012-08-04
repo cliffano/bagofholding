@@ -281,4 +281,44 @@ describe('cli', function () {
       checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
     });
   });
+
+  describe('readCustomConfigFileSync', function () {
+    
+    it('should read file from specified file path when file path is absolute', function () {
+      mocks = {
+        'fs_readFileSync_/home/blah/.conf.json': 'somedirfilecontent'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readCustomConfigFileSync('/home/blah/.conf.json').should.equal('somedirfilecontent');
+      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
+    });
+
+    it('should read file from relative file path when file path is not absolute', function () {
+      mocks = {
+        'fs_readFileSync_/curr/.conf.json': 'somedirfilecontent',
+        process_cwd: '/curr/dir'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readCustomConfigFileSync('../.conf.json').should.equal('somedirfilecontent');
+      checks.fs_readFileSync_file.should.equal('/curr/.conf.json');
+    });
+
+    it('should throw error when file does not exist', function () {
+      mocks = {
+        'fs_readFileSync_/foo/bar/.conf.json': 'somedirfilecontent',
+        process_cwd: '/curr/dir'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      try {
+        cli.readCustomConfigFileSync('../.conf.json').should.equal('somedirfilecontent');
+        should.fail('an error should\'ve been thrown');
+      } catch (err) {
+        err.message.should.equal('Unable to find configuration file in /curr/.conf.json');
+      }
+      checks.fs_readFileSync_file.should.equal('/curr/.conf.json');
+    });
+  });
 });

@@ -1,5 +1,6 @@
 ### 0.0.12 (SNAPSHOT)
 * Add global cli options.
+* Add cli#readCustomConfigFileSync
 
 ### 0.0.11
 * Add mock#process nextTick and stdout
