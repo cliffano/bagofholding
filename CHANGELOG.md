@@ -1,4 +1,7 @@
-### 0.0.12 (SNAPSHOT)
+### 0.0.13 (SNAPSHOT)
+*
+
+### 0.0.12
 * Add global cli options.
 * Add cli#readCustomConfigFileSync
 
