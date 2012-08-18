@@ -1,5 +1,6 @@
 ### 0.0.13 (SNAPSHOT)
-*
+* Add cli#spawn
+* Add mock#spawn
 
 ### 0.0.12
 * Add global cli options.

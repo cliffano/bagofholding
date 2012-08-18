@@ -321,4 +321,66 @@ describe('cli', function () {
       checks.fs_readFileSync_file.should.equal('/curr/.conf.json');
     });
   });
+
+  describe('spawn', function () {
+    
+    it('should write data via stdout and stderr when data event is emitted', function () {
+      mocks.stream_on_data = ['somedata'];
+      mocks.requires = {
+        child_process: bag.mock.childProcess(checks, mocks),
+        process: bag.mock.process(checks, mocks)
+      };
+      cli = create(checks, mocks);
+      var spawn = cli.spawn('somecommand', ['arg1', 'arg2'], function (err, result) {
+      });
+      checks.child_process_spawn__args[0].should.equal('somecommand');
+      checks.child_process_spawn__args[1].length.should.equal(2);
+      checks.child_process_spawn__args[1][0].should.equal('arg1');
+      checks.child_process_spawn__args[1][1].should.equal('arg2');
+      checks.stream_on_data__args.length.should.equal(2);
+      checks.stream_on_data__args[0].should.equal('data');
+      checks.stream_on_data__args[1]('somedata');
+      checks.stream_write_strings.length.should.equal(3);
+      checks.stream_write_strings[0].should.equal('somedata');
+      checks.stream_write_strings[1].should.equal('somedata');
+    });
+
+    it('should pass error and exit code to callback when exit code is not 0', function () {
+      mocks.socket_on_exit = [1000];
+      mocks.requires = {
+        child_process: bag.mock.childProcess(checks, mocks),
+        process: bag.mock.process(checks, mocks)
+      };
+      cli = create(checks, mocks);
+      var spawn = cli.spawn('somecommand', ['arg1', 'arg2'], function (err, result) {
+        checks.spawn_err = err;
+        checks.spawn_result = result;
+      });
+      checks.child_process_spawn__args[0].should.equal('somecommand');
+      checks.child_process_spawn__args[1].length.should.equal(2);
+      checks.child_process_spawn__args[1][0].should.equal('arg1');
+      checks.child_process_spawn__args[1][1].should.equal('arg2');
+      checks.spawn_err.message.should.equal('1000');
+      checks.spawn_result.should.equal(1000);
+    });
+
+    it('should pass no error and exit code to callback when exist code is 0', function () {
+      mocks.socket_on_exit = [0];
+      mocks.requires = {
+        child_process: bag.mock.childProcess(checks, mocks),
+        process: bag.mock.process(checks, mocks)
+      };
+      cli = create(checks, mocks);
+      var spawn = cli.spawn('somecommand', ['arg1', 'arg2'], function (err, result) {
+        checks.spawn_err = err;
+        checks.spawn_result = result;
+      });
+      checks.child_process_spawn__args[0].should.equal('somecommand');
+      checks.child_process_spawn__args[1].length.should.equal(2);
+      checks.child_process_spawn__args[1][0].should.equal('arg1');
+      checks.child_process_spawn__args[1][1].should.equal('arg2');
+      should.not.exist(checks.spawn_err);
+      checks.spawn_result.should.equal(0);
+    });
+  });
 });

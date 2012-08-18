@@ -47,6 +47,19 @@ describe('mock', function () {
       checks.child_process_fork_sends[0].should.equal('somemessage');
       checks.child_process_fork_sends[1].foo.should.equal('bar');
     });
+
+    it('should return stdout and stderr streams along with an event handler when child process spawn is called', function () {
+      var childProcess = mock.childProcess(checks, mocks),
+        spawn = childProcess.spawn('somecommand', ['arg1', 'arg2']);
+      spawn.stdout.should.be.a('object');
+      spawn.stderr.should.be.a('object');
+      spawn.on.should.be.a('function');
+      checks.child_process_spawn__args.length.should.equal(2);
+      checks.child_process_spawn__args[0].should.equal('somecommand');
+      checks.child_process_spawn__args[1].length.should.equal(2);
+      checks.child_process_spawn__args[1][0].should.equal('arg1');
+      checks.child_process_spawn__args[1][1].should.equal('arg2');
+    });
   });
 
   describe('commander', function () {
@@ -323,6 +336,12 @@ describe('mock', function () {
     it('should not emit event when mock event data is not specified', function () {
       mock.process(checks, mocks).on('someevent', function cb() {});
       should.not.exist(checks.process_on_someevent__args);
+    });
+
+    it('should return a stream when stderr is called', function () {
+      mock.process(checks, mocks).stderr.should.have.property('end');
+      mock.process(checks, mocks).stderr.should.have.property('on');
+      mock.process(checks, mocks).stderr.should.have.property('write');
     });
 
     it('should return a stream when stdout is called', function () {
