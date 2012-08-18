@@ -2,7 +2,7 @@
   "name": "bagofholding",
   "description": "An uncursed bag of various Node.js utility functions.",
   "keywords": [],
-  "version": "0.0.13",
+  "version": "0.0.14",
   "homepage": "http://github.com/cliffano/bagofholding",
   "author": "Cliffano Subagio <blah@cliffano.com> (http://blog.cliffano.com)",
   "contributors": [
