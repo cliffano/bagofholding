@@ -1,5 +1,4 @@
+.bob
 .DS_Store
-build
-couchtato.log
 node_modules
 npm-debug.log
