@@ -1,5 +1,5 @@
 ### 0.0.14 (SNAPSHOT)
-*
+* Add mock#fs writeFileSync
 
 ### 0.0.13
 * Add cli#spawn

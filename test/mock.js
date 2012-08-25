@@ -170,6 +170,13 @@ describe('mock', function () {
       }
       checks.fs_readFileSync_file.should.equal('someinexistingfile');
     });
+
+    it('should pass file and data when a file is written', function () {
+      var fs = mock.fs(checks, mocks);
+      fs.writeFileSync('someexistingfile', 'somedata');
+      checks.fs_writeFileSync_file.should.equal('someexistingfile');
+      checks.fs_writeFileSync_data.should.equal('somedata');
+    });
   });
 
   describe('httpReq', function () {
