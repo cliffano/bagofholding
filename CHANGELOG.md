@@ -1,4 +1,7 @@
-### 0.0.14 (SNAPSHOT)
+### 0.0.15 (SNAPSHOT)
+*
+
+### 0.0.14
 * Add mock#fs writeFileSync
 
 ### 0.0.13
@@ -20,11 +23,11 @@
 
 ### 0.0.8
 * Add mock#stream 
-# Add mock#fs createWriteStream
-# Add mock#process on
-# Remove {now()} template function from text#apply, more appropriate location in the userland
-# Add text#applyPrecompiled
-# Add text#compile
+* Add mock#fs createWriteStream
+* Add mock#process on
+* Remove {now()} template function from text#apply, more appropriate location in the userland
+* Add text#applyPrecompiled
+* Add text#compile
 
 ### 0.0.7
 * Add mock#childProcess fork
