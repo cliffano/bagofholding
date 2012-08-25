@@ -155,8 +155,9 @@ describe('mock', function () {
         'fs_readFileSync_someexistingfile': 'somefilecontent'
       };
       var fs = mock.fs(checks, mocks);
-      fs.readFileSync('someexistingfile').should.equal('somefilecontent');
+      fs.readFileSync('someexistingfile', 'utf-8').should.equal('somefilecontent');
       checks.fs_readFileSync_file.should.equal('someexistingfile');
+      checks.fs_readFileSync_encoding.should.equal('utf-8');
     });
 
     it('should throw an error when an inexisting file is read', function (done) {
@@ -169,13 +170,15 @@ describe('mock', function () {
         done();
       }
       checks.fs_readFileSync_file.should.equal('someinexistingfile');
+      should.not.exist(checks.fs_readFileSync_encoding);
     });
 
     it('should pass file and data when a file is written', function () {
       var fs = mock.fs(checks, mocks);
-      fs.writeFileSync('someexistingfile', 'somedata');
+      fs.writeFileSync('someexistingfile', 'somedata', 'utf-8');
       checks.fs_writeFileSync_file.should.equal('someexistingfile');
       checks.fs_writeFileSync_data.should.equal('somedata');
+      checks.fs_writeFileSync_encoding.should.equal('utf-8');
     });
   });
 
