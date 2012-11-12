@@ -1,5 +1,5 @@
 ### 0.0.15 (SNAPSHOT)
-*
+* Add mock#fs existsSync and writeFile
 
 ### 0.0.14
 * Add mock#fs writeFileSync

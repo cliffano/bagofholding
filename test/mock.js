@@ -150,6 +150,26 @@ describe('mock', function () {
       checks.fs_createWriteStream_opts.encoding.should.equal('utf-8');
     });
 
+    it('should return true when mock value is true', function () {
+      mocks.fs_existsSync_somefile = true;
+      var fs = mock.fs(checks, mocks);
+      fs.existsSync('somefile').should.equal(true);
+      checks.fs_existsSync_file.should.equal('somefile');
+    });
+
+    it('should return false when mock value is false', function () {
+      mocks.fs_existsSync_somefile = false;
+      var fs = mock.fs(checks, mocks);
+      fs.existsSync('somefile').should.equal(false);
+      checks.fs_existsSync_file.should.equal('somefile');
+    });
+
+    it('should return false when mock value is not provided', function () {
+      var fs = mock.fs(checks, mocks);
+      fs.existsSync('somefile').should.equal(false);
+      checks.fs_existsSync_file.should.equal('somefile');
+    });
+
     it('should return mock file when an existing file is read', function () {
       mocks = {
         'fs_readFileSync_someexistingfile': 'somefilecontent'
@@ -173,7 +193,28 @@ describe('mock', function () {
       should.not.exist(checks.fs_readFileSync_encoding);
     });
 
-    it('should pass file and data when a file is written', function () {
+    it('should pass file and data when a file is written asynchronously', function (done) {
+      var fs = mock.fs(checks, mocks);
+      fs.writeFile('someexistingfile', 'somedata', function (err) {
+        done();
+      });
+      checks.fs_writeFile_file.should.equal('someexistingfile');
+      checks.fs_writeFile_data.should.equal('somedata');
+    });
+
+    it('should pass error to callback when a file is written asynchronously', function (done) {
+      mocks.fs_writeFile_error = new Error('someerror');
+      var fs = mock.fs(checks, mocks);
+      fs.writeFile('someexistingfile', 'somedata', function (err) {
+        checks.fs_writeFile_error = err;
+        done();
+      });
+      checks.fs_writeFile_file.should.equal('someexistingfile');
+      checks.fs_writeFile_data.should.equal('somedata');
+      checks.fs_writeFile_error.message.should.equal('someerror');
+    });
+
+    it('should pass file and data when a file is written synchronously', function () {
       var fs = mock.fs(checks, mocks);
       fs.writeFileSync('someexistingfile', 'somedata', 'utf-8');
       checks.fs_writeFileSync_file.should.equal('someexistingfile');
