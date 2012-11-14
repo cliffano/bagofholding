@@ -150,6 +150,32 @@ describe('mock', function () {
       checks.fs_createWriteStream_opts.encoding.should.equal('utf-8');
     });
 
+    it('should pass exists true to callback when mock value is true', function (done) {
+      mocks.fs_exists_somefile = true;
+      var fs = mock.fs(checks, mocks);
+      fs.exists('somefile', function (exists) {
+        exists.should.equal(true);
+        done();
+      });
+    });
+
+    it('should pass exists false to callback when mock value is false', function (done) {
+      mocks.fs_exists_somefile = false;
+      var fs = mock.fs(checks, mocks);
+      fs.exists('somefile', function (exists) {
+        exists.should.equal(false);
+        done();
+      });
+    });
+
+    it('should pass exists false to callback when mock value is not specified', function (done) {
+      var fs = mock.fs(checks, mocks);
+      fs.exists('somefile', function (exists) {
+        exists.should.equal(false);
+        done();
+      });
+    });
+
     it('should return true when mock value is true', function () {
       mocks.fs_existsSync_somefile = true;
       var fs = mock.fs(checks, mocks);
@@ -168,6 +194,24 @@ describe('mock', function () {
       var fs = mock.fs(checks, mocks);
       fs.existsSync('somefile').should.equal(false);
       checks.fs_existsSync_file.should.equal('somefile');
+    });
+
+    it('should pass mock error when specified', function (done) {
+      mocks['fs_readFile_error_somefile'] = new Error('someerror');
+      var fs = mock.fs(checks, mocks);
+      fs.readFile('somefile', 'utf-8', function (err, data) {
+        err.message.should.equal('someerror');
+        done();
+      });
+    });
+
+    it('should pass mock result when specified', function (done) {
+      mocks['fs_readFile_data_somefile'] = 'somedata';
+      var fs = mock.fs(checks, mocks);
+      fs.readFile('somefile', 'utf-8', function (err, data) {
+        data.should.equal('somedata');
+        done();
+      });
     });
 
     it('should return mock file when an existing file is read', function () {
