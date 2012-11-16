@@ -322,6 +322,201 @@ describe('cli', function () {
     });
   });
 
+  describe('readFiles', function () {
+
+    it('should read file relative to current directory when the file exists', function (done) {
+      mocks = {
+        'fs_exists_/curr/foo.js': true,
+        'fs_readFile_data_/curr/foo.js': 'somecontent',
+        process_cwd: '/curr/dir'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          '../foo.js': {} 
+        },
+        function (err, results) {
+          should.not.exist(err);
+          results['../foo.js'].should.equal('somecontent');
+          done();
+        });
+    });
+
+    it('should pass no data when file does not exist and mandatory is false', function (done) {
+      mocks = {
+        'fs_exists_/curr/foo.js': false,
+        process_cwd: '/curr/dir'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          '../foo.js': { mandatory: false } 
+        },
+        function (err, results) {
+          should.not.exist(err);
+          should.not.exist(results['../foo.js']);
+          done();
+        });
+    });
+
+    it('should pass error and no data when file does not exist and mandatory is true', function (done) {
+      mocks = {
+        'fs_exists_/curr/foo.js': false,
+        process_cwd: '/curr/dir'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          '../foo.js': { mandatory: true } 
+        },
+        function (err, results) {
+          err.message.should.equal('File not found: /curr/foo.js');
+          should.not.exist(results['../foo.js']);
+          done();
+        });
+    });
+
+    it('should read file with absolute path when file exists', function (done) {
+      mocks = {
+        'fs_exists_/curr/blah/foo.js': true,
+        'fs_readFile_data_/curr/blah/foo.js': 'somecontent',
+        process_cwd: '/curr/dir'
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          '/curr/blah/foo.js': {} 
+        },
+        function (err, results) {
+          should.not.exist(err);
+          results['/curr/blah/foo.js'].should.equal('somecontent');
+          done();
+        });
+    });
+
+    it('should read file in home directory when lookup is true and relative location does not exist', function (done) {
+      mocks = {
+        'fs_exists_/home/foo.js': true,
+        'fs_exists_/curr/dir/blah/foo.js': false,
+        'fs_readFile_data_/home/foo.js': 'somecontent',
+        process_cwd: '/curr/dir',
+        process_env: { HOME: '/home' }
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          'blah/foo.js': { lookup: true } 
+        },
+        function (err, results) {
+          should.not.exist(err);
+          results['blah/foo.js'].should.equal('somecontent');
+          done();
+        });
+    });
+
+    it('should read file relative to current directory when the file exists even though lookup is true and lookup file exists', function (done) {
+      mocks = {
+        'fs_exists_/home/foo.js': true,
+        'fs_exists_/curr/dir/blah/foo.js': true,
+        'fs_readFile_data_/home/foo.js': 'somelookupcontent',
+        'fs_readFile_data_/curr/dir/blah/foo.js': 'somecontent',
+        process_cwd: '/curr/dir',
+        process_env: { HOME: '/home' }
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          'blah/foo.js': { lookup: true } 
+        },
+        function (err, results) {
+          should.not.exist(err);
+          results['blah/foo.js'].should.equal('somecontent');
+          done();
+        });
+    });
+
+    it('should read multiple files when some exist and some do not and none is mandatory', function (done) {
+      mocks = {
+        'fs_exists_/home/foo.js': true,
+        'fs_exists_/curr/dir/blah/bar.js': true,
+        'fs_exists_/curr/dir/xyz.js': false,
+        'fs_readFile_data_/home/foo.js': 'somelookupcontent',
+        'fs_readFile_data_/curr/dir/blah/bar.js': 'somecontent',
+        process_cwd: '/curr/dir',
+        process_env: { HOME: '/home' }
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          'foo.js': { lookup: true },
+          'blah/bar.js': {},
+          'xyz.js': {}
+        },
+        function (err, results) {
+          should.not.exist(err);
+          results['foo.js'].should.equal('somelookupcontent');
+          results['blah/bar.js'].should.equal('somecontent');
+          should.not.exist(results['xyz.js']);
+          done();
+        });
+    });
+
+    it('should pass error when some exist and some do not and the non existent file is mandatory', function (done) {
+      mocks = {
+        'fs_exists_/home/foo.js': true,
+        'fs_exists_/curr/dir/blah/bar.js': true,
+        'fs_exists_/curr/dir/xyz.js': false,
+        'fs_readFile_data_/home/foo.js': 'somelookupcontent',
+        'fs_readFile_data_/curr/dir/blah/bar.js': 'somecontent',
+        process_cwd: '/curr/dir',
+        process_env: { HOME: '/home' }
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles({
+          'foo.js': { lookup: true },
+          'blah/bar.js': {},
+          'xyz.js': { mandatory: true, lookup: true }
+        },
+        function (err, results) {
+          err.message.should.equal('File not found: /curr/dir/xyz.js, /home/xyz.js');
+          should.not.exist(results['xyz.js']);
+
+          // existing files are still included in the results
+          results['foo.js'].should.equal('somelookupcontent');
+          results['blah/bar.js'].should.equal('somecontent');
+
+          done();
+        });
+    });
+
+    it('should read an array of files with default settings', function (done) {
+      mocks = {
+        'fs_exists_/foo.js': true,
+        'fs_exists_/curr/dir/blah/bar.js': true,
+        'fs_exists_/curr/dir/xyz.js': false,
+        'fs_readFile_data_/foo.js': 'somehomecontent',
+        'fs_readFile_data_/curr/dir/blah/bar.js': 'somecontent',
+        process_cwd: '/curr/dir',
+        process_env: { HOME: '/home' }
+      };
+      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
+      cli = create(checks, mocks);
+      cli.readFiles([
+          '/foo.js',
+          'blah/bar.js',
+          'xyz.js'
+        ],
+        function (err, results) {
+          should.not.exist(err);
+          results['/foo.js'].should.equal('somehomecontent');
+          results['blah/bar.js'].should.equal('somecontent');
+          should.not.exist(results['xyz.js']);
+          done();
+        });
+    });
+  });
+
   describe('spawn', function () {
     
     it('should write data via stdout and stderr when data event is emitted', function () {

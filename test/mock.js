@@ -197,7 +197,7 @@ describe('mock', function () {
     });
 
     it('should pass mock error when specified', function (done) {
-      mocks['fs_readFile_error_somefile'] = new Error('someerror');
+      mocks.fs_readFile_error_somefile = new Error('someerror');
       var fs = mock.fs(checks, mocks);
       fs.readFile('somefile', 'utf-8', function (err, data) {
         err.message.should.equal('someerror');
@@ -206,7 +206,7 @@ describe('mock', function () {
     });
 
     it('should pass mock result when specified', function (done) {
-      mocks['fs_readFile_data_somefile'] = 'somedata';
+      mocks.fs_readFile_data_somefile = 'somedata';
       var fs = mock.fs(checks, mocks);
       fs.readFile('somefile', 'utf-8', function (err, data) {
         data.should.equal('somedata');
