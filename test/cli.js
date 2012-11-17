@@ -326,7 +326,7 @@ describe('cli', function () {
 
     it('should read file relative to current directory when the file exists', function (done) {
       mocks = {
-        'fs_exists_/curr/foo.js': true,
+        'fs_readFile_error_/curr/foo.js': null,
         'fs_readFile_data_/curr/foo.js': 'somecontent',
         process_cwd: '/curr/dir'
       };
@@ -344,7 +344,7 @@ describe('cli', function () {
 
     it('should pass no data when file does not exist and mandatory is false', function (done) {
       mocks = {
-        'fs_exists_/curr/foo.js': false,
+        'fs_readFile_error_/curr/foo.js': new Error('File not found: /curr/foo.js'),
         process_cwd: '/curr/dir'
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
@@ -361,7 +361,7 @@ describe('cli', function () {
 
     it('should pass error and no data when file does not exist and mandatory is true', function (done) {
       mocks = {
-        'fs_exists_/curr/foo.js': false,
+        'fs_readFile_error_/curr/foo.js': new Error('File not found: /curr/foo.js'),
         process_cwd: '/curr/dir'
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
@@ -378,7 +378,7 @@ describe('cli', function () {
 
     it('should read file with absolute path when file exists', function (done) {
       mocks = {
-        'fs_exists_/curr/blah/foo.js': true,
+        'fs_readFile_error_/curr/blah/foo.js': null,
         'fs_readFile_data_/curr/blah/foo.js': 'somecontent',
         process_cwd: '/curr/dir'
       };
@@ -396,8 +396,8 @@ describe('cli', function () {
 
     it('should read file in home directory when lookup is true and relative location does not exist', function (done) {
       mocks = {
-        'fs_exists_/home/foo.js': true,
-        'fs_exists_/curr/dir/blah/foo.js': false,
+        'fs_readFile_error_/home/foo.js': null,
+        'fs_readFile_error_/curr/dir/blah/foo.js': new Error('File not found: /curr/dir/blah/foo.js'),
         'fs_readFile_data_/home/foo.js': 'somecontent',
         process_cwd: '/curr/dir',
         process_env: { HOME: '/home' }
@@ -416,8 +416,8 @@ describe('cli', function () {
 
     it('should read file relative to current directory when the file exists even though lookup is true and lookup file exists', function (done) {
       mocks = {
-        'fs_exists_/home/foo.js': true,
-        'fs_exists_/curr/dir/blah/foo.js': true,
+        'fs_readFile_error_/home/foo.js': null,
+        'fs_readFile_error_/curr/dir/blah/foo.js': null,
         'fs_readFile_data_/home/foo.js': 'somelookupcontent',
         'fs_readFile_data_/curr/dir/blah/foo.js': 'somecontent',
         process_cwd: '/curr/dir',
@@ -437,9 +437,9 @@ describe('cli', function () {
 
     it('should read multiple files when some exist and some do not and none is mandatory', function (done) {
       mocks = {
-        'fs_exists_/home/foo.js': true,
-        'fs_exists_/curr/dir/blah/bar.js': true,
-        'fs_exists_/curr/dir/xyz.js': false,
+        'fs_readFile_error_/home/foo.js': null,
+        'fs_readFile_error_/curr/dir/blah/bar.js': null,
+        'fs_readFile_error_/curr/dir/xyz.js': new Error('File not found: /curr/dir/xyz.js'),
         'fs_readFile_data_/home/foo.js': 'somelookupcontent',
         'fs_readFile_data_/curr/dir/blah/bar.js': 'somecontent',
         process_cwd: '/curr/dir',
@@ -463,9 +463,9 @@ describe('cli', function () {
 
     it('should pass error when some exist and some do not and the non existent file is mandatory', function (done) {
       mocks = {
-        'fs_exists_/home/foo.js': true,
-        'fs_exists_/curr/dir/blah/bar.js': true,
-        'fs_exists_/curr/dir/xyz.js': false,
+        'fs_readFile_error_/home/foo.js': null,
+        'fs_readFile_error_/curr/dir/blah/bar.js': null,
+        'fs_readFile_error_/curr/dir/xyz.js': new Error('File not found: /curr/dir/xyz.js, /home/xyz.js'),
         'fs_readFile_data_/home/foo.js': 'somelookupcontent',
         'fs_readFile_data_/curr/dir/blah/bar.js': 'somecontent',
         process_cwd: '/curr/dir',
