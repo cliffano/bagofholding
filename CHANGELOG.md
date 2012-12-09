@@ -1,6 +1,8 @@
 ### 0.0.16 (SNAPSHOT)
 * Add mock#fs exists and readFile
 * Add cli#readFiles
+* Add http#request
+* Add cli#command
 
 ### 0.0.15
 * Add mock#fs existsSync and writeFile
