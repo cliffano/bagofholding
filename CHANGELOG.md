@@ -1,4 +1,7 @@
-### 0.0.16 (SNAPSHOT)
+### 0.0.17 (SNAPSHOT)
+*
+
+### 0.0.16
 * Add mock#fs exists and readFile
 * Add cli#readFiles
 * Add http#request
