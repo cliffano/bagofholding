@@ -1,5 +1,5 @@
 ### 0.0.17 (SNAPSHOT)
-*
+* Add irc#Bot
 
 ### 0.0.16
 * Add mock#fs exists and readFile
