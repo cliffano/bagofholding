@@ -1,5 +1,5 @@
 ### 0.0.18 (SNAPSHOT)
-*
+* Remove mock since sandoxed-module has been inactive
 
 ### 0.0.17
 * Add irc#Bot
