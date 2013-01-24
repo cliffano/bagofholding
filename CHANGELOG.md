@@ -1,4 +1,4 @@
-### 0.0.18 (SNAPSHOT)
+### 0.1.0-pre
 * Remove mock since sandoxed-module has been inactive
 
 ### 0.0.17
