@@ -1,3 +1,68 @@
+var buster = require('buster'),
+  cli = require('../lib/cli'),
+  fs = require('fs');
+
+buster.testCase('cli - readFile', {
+  setUp: function () {
+    this.mockProcess = this.mock(process);
+    this.mockFs = this.mock(fs);
+  },
+  'should return file content in current directory when it exists': function () {
+    this.mockProcess.expects('cwd').once().returns('/curr/dir');
+    this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').returns('currdirfilecontent'); 
+    var data = cli.readFile('.conf.json');
+    assert.equals(data, 'currdirfilecontent');
+  },
+  'should return file content in home directory when it exists but none exists in current directory and platform is windows': function () {
+    this.mockProcess.expects('cwd').once().returns('/curr/dir');
+    this.stub(process, 'env', { USERPROFILE: '/home/dir' });
+    this.stub(process, 'platform', 'win32');
+    this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').throws(new Error('doesnotexist')); 
+    this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').returns('homedirfilecontent'); 
+    var data = cli.readFile('.conf.json');
+    assert.equals(data, 'homedirfilecontent');
+  },
+  'should return file content in home directory when it exists but none exists in current directory and platform is non windows': function () {
+    this.mockProcess.expects('cwd').once().returns('/curr/dir');
+    this.stub(process, 'env', { HOME: '/home/dir' });
+    this.stub(process, 'platform', 'linux');
+    this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').throws(new Error('doesnotexist')); 
+    this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').returns('homedirfilecontent'); 
+    var data = cli.readFile('.conf.json');
+    assert.equals(data, 'homedirfilecontent');
+  },
+  'should throw an error when configuration file does not exist anywhere and file has relative path': function (done) {
+    this.mockProcess.expects('cwd').once().returns('/curr/dir');
+    this.stub(process, 'env', { HOME: '/home/dir' });
+    this.stub(process, 'platform', 'linux');
+    this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').throws(new Error('doesnotexist'));
+    this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').throws(new Error('doesnotexist'));
+    try {
+      cli.readFile('.conf.json');
+    } catch (err) {
+      assert.equals(err.message, 'Unable to find configuration file in /curr/dir/.conf.json, /home/dir/.conf.json');
+      done();
+    }
+  },
+  'should return file content with absolute path when it exists': function () {
+    this.mockFs.expects('readFileSync').once().withExactArgs('/absolute/dir/.conf.json').returns('absolutedirfilecontent'); 
+    var data = cli.readFile('/absolute/dir/.conf.json');
+    assert.equals(data, 'absolutedirfilecontent');
+  },
+  'should throw an error when configuration file does not exist anywhere and file has absolute path': function (done) {
+    this.stub(process, 'env', { HOME: '/home/dir' });
+    this.stub(process, 'platform', 'linux');
+    this.mockFs.expects('readFileSync').once().withExactArgs('/absolute/dir/.conf.json').throws(new Error('doesnotexist'));
+    this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').throws(new Error('doesnotexist'));
+    try {
+      cli.readFile('/absolute/dir/.conf.json');
+    } catch (err) {
+      assert.equals(err.message, 'Unable to find configuration file in /absolute/dir/.conf.json, /home/dir/.conf.json');
+      done();
+    }
+  }
+});
+
 /*
 var bag = require('../lib/bagofholding'),
   sandbox = require('sandboxed-module'),
@@ -211,115 +276,6 @@ describe('cli', function () {
       checks.commander_actions.length.should.equal(2);
       checks.commander_actions[0].should.be.a('function');
       checks.commander_actions[1].should.be.a('function');
-    });
-  });
-
-  describe('readConfigFileSync', function () {
-    
-    it('should return file content in current directory when all files exist and platform is non-windows', function () {
-      mocks = {
-        process_env: { HOME: '/home/blah' },
-        process_cwd: '/curr/dir',
-        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent',
-        'fs_readFileSync_/curr/dir/.conf.json': 'currdirfilecontent'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readConfigFileSync('.conf.json').should.equal('currdirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/curr/dir/.conf.json');
-    });
-
-    it('should return file content in current directory when it exists but none exists in home directory', function () {
-      mocks = {
-        process_env: { HOME: '/home/blah' },
-        process_cwd: '/curr/dir',
-        'fs_readFileSync_/curr/dir/.conf.json': 'currdirfilecontent'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readConfigFileSync('.conf.json').should.equal('currdirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/curr/dir/.conf.json');
-    });
-
-    it('should return file content in home directory when it exists but none exists in current directory and platform is non-windows', function () {
-      mocks = {
-        process_env: { HOME: '/home/blah' },
-        process_cwd: '/curr/dir',
-        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
-    });
-
-    it('should return file content in home directory when it exists but none exists in current directory and platform is windows', function () {
-      mocks = {
-        process_platform: 'win32',
-        process_env: { USERPROFILE: '/home/blah' },
-        process_cwd: '/curr/dir',
-        'fs_readFileSync_/home/blah/.conf.json': 'homedirfilecontent'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
-    });
-
-    it('should throw an error when configuration file does not exist anywhere', function () {
-      mocks = {
-        process_env: { HOME: '/home/blah' },
-        process_cwd: '/curr/dir'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      try {
-        cli.readConfigFileSync('.conf.json').should.equal('homedirfilecontent');
-        should.fail('an error should\'ve been thrown');
-      } catch (err) {
-        err.message.should.equal('Unable to find configuration file in /curr/dir/.conf.json, /home/blah/.conf.json');
-      }
-      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
-    });
-  });
-
-  describe('readCustomConfigFileSync', function () {
-    
-    it('should read file from specified file path when file path is absolute', function () {
-      mocks = {
-        'fs_readFileSync_/home/blah/.conf.json': 'somedirfilecontent'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readCustomConfigFileSync('/home/blah/.conf.json').should.equal('somedirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/home/blah/.conf.json');
-    });
-
-    it('should read file from relative file path when file path is not absolute', function () {
-      mocks = {
-        'fs_readFileSync_/curr/.conf.json': 'somedirfilecontent',
-        process_cwd: '/curr/dir'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      cli.readCustomConfigFileSync('../.conf.json').should.equal('somedirfilecontent');
-      checks.fs_readFileSync_file.should.equal('/curr/.conf.json');
-    });
-
-    it('should throw error when file does not exist', function () {
-      mocks = {
-        'fs_readFileSync_/foo/bar/.conf.json': 'somedirfilecontent',
-        process_cwd: '/curr/dir'
-      };
-      mocks.requires = { fs: bag.mock.fs(checks, mocks) };
-      cli = create(checks, mocks);
-      try {
-        cli.readCustomConfigFileSync('../.conf.json').should.equal('somedirfilecontent');
-        should.fail('an error should\'ve been thrown');
-      } catch (err) {
-        err.message.should.equal('Unable to find configuration file in /curr/.conf.json');
-      }
-      checks.fs_readFileSync_file.should.equal('/curr/.conf.json');
     });
   });
 

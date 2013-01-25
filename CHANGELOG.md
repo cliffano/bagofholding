@@ -1,5 +1,6 @@
 ### 0.1.0-pre
 * Remove mock since sandoxed-module has been inactive
+* Combine cli#readConfigFileSync and cli#readCustomConfigFileSync into cli#readFile
 
 ### 0.0.17
 * Add irc#Bot
