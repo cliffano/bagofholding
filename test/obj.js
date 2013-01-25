@@ -22,7 +22,7 @@ buster.testCase('obj - exist', {
   },
   'should return false when object does not contain nested properties': function () {
     assert.isFalse(obj.exist('a.b.c', { a: { b: 'foo' } }));
-  },
+  }
 });
 
 buster.testCase('obj - value', {
@@ -51,5 +51,5 @@ buster.testCase('obj - value', {
   },
   'should return undefined if nested properties do not exist but the name of leaf node property exists as root property in object': function () {
     assert.equals(obj.value('a.b.c', { a: { b: 'foo' }, c: 'bar' }), undefined);
-  },
+  }
 });
