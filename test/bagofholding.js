@@ -1,21 +1,12 @@
 var bag = require('../lib/bagofholding'),
-  sandbox = require('sandboxed-module'),
-  should = require('should'),
-  checks, mocks;
+  buster = require('buster');
 
-describe('bagofholding', function () {
-
-  function create(checks, mocks) {
+buster.testCase('bagofholding', {
+  'should expose all modules': function () {
+    assert.defined(bag.cli);
+    assert.defined(bag.http);
+    assert.defined(bag.irc);
+    assert.defined(bag.obj);
+    assert.defined(bag.text);
   }
-  
-  beforeEach(function () {
-    checks = {};
-    mocks = {};
-  });
-
-  it('should expose all modules', function () {
-    should.exist(bag.cli);
-    should.exist(bag.obj);
-    should.exist(bag.text);
-  });
 });
