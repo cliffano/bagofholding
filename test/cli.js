@@ -2,7 +2,7 @@ var buster = require('buster'),
   cli = require('../lib/cli'),
   fs = require('fs');
 
-buster.testCase('cli - readFile', {
+buster.testCase('cli - lookupFile', {
   setUp: function () {
     this.mockProcess = this.mock(process);
     this.mockFs = this.mock(fs);
@@ -10,7 +10,7 @@ buster.testCase('cli - readFile', {
   'should return file content in current directory when it exists': function () {
     this.mockProcess.expects('cwd').once().returns('/curr/dir');
     this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').returns('currdirfilecontent'); 
-    var data = cli.readFile('.conf.json');
+    var data = cli.lookupFile('.conf.json');
     assert.equals(data, 'currdirfilecontent');
   },
   'should return file content in home directory when it exists but none exists in current directory and platform is windows': function () {
@@ -19,7 +19,7 @@ buster.testCase('cli - readFile', {
     this.stub(process, 'platform', 'win32');
     this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').throws(new Error('doesnotexist')); 
     this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').returns('homedirfilecontent'); 
-    var data = cli.readFile('.conf.json');
+    var data = cli.lookupFile('.conf.json');
     assert.equals(data, 'homedirfilecontent');
   },
   'should return file content in home directory when it exists but none exists in current directory and platform is non windows': function () {
@@ -28,7 +28,7 @@ buster.testCase('cli - readFile', {
     this.stub(process, 'platform', 'linux');
     this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').throws(new Error('doesnotexist')); 
     this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').returns('homedirfilecontent'); 
-    var data = cli.readFile('.conf.json');
+    var data = cli.lookupFile('.conf.json');
     assert.equals(data, 'homedirfilecontent');
   },
   'should throw an error when configuration file does not exist anywhere and file has relative path': function (done) {
@@ -38,15 +38,15 @@ buster.testCase('cli - readFile', {
     this.mockFs.expects('readFileSync').once().withExactArgs('/curr/dir/.conf.json').throws(new Error('doesnotexist'));
     this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').throws(new Error('doesnotexist'));
     try {
-      cli.readFile('.conf.json');
+      cli.lookupFile('.conf.json');
     } catch (err) {
-      assert.equals(err.message, 'Unable to find configuration file in /curr/dir/.conf.json, /home/dir/.conf.json');
+      assert.equals(err.message, 'Unable to lookup file in /curr/dir/.conf.json, /home/dir/.conf.json');
       done();
     }
   },
   'should return file content with absolute path when it exists': function () {
     this.mockFs.expects('readFileSync').once().withExactArgs('/absolute/dir/.conf.json').returns('absolutedirfilecontent'); 
-    var data = cli.readFile('/absolute/dir/.conf.json');
+    var data = cli.lookupFile('/absolute/dir/.conf.json');
     assert.equals(data, 'absolutedirfilecontent');
   },
   'should throw an error when configuration file does not exist anywhere and file has absolute path': function (done) {
@@ -55,9 +55,9 @@ buster.testCase('cli - readFile', {
     this.mockFs.expects('readFileSync').once().withExactArgs('/absolute/dir/.conf.json').throws(new Error('doesnotexist'));
     this.mockFs.expects('readFileSync').once().withExactArgs('/home/dir/.conf.json').throws(new Error('doesnotexist'));
     try {
-      cli.readFile('/absolute/dir/.conf.json');
+      cli.lookupFile('/absolute/dir/.conf.json');
     } catch (err) {
-      assert.equals(err.message, 'Unable to find configuration file in /absolute/dir/.conf.json, /home/dir/.conf.json');
+      assert.equals(err.message, 'Unable to lookup file in /absolute/dir/.conf.json, /home/dir/.conf.json');
       done();
     }
   }
@@ -289,7 +289,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           '../foo.js': {} 
         },
         function (err, results) {
@@ -306,7 +306,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           '../foo.js': { mandatory: false } 
         },
         function (err, results) {
@@ -323,7 +323,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           '../foo.js': { mandatory: true } 
         },
         function (err, results) {
@@ -341,7 +341,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           '/curr/blah/foo.js': {} 
         },
         function (err, results) {
@@ -361,7 +361,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           'blah/foo.js': { lookup: true } 
         },
         function (err, results) {
@@ -382,7 +382,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           'blah/foo.js': { lookup: true } 
         },
         function (err, results) {
@@ -404,7 +404,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           'foo.js': { lookup: true },
           'blah/bar.js': {},
           'xyz.js': {}
@@ -430,7 +430,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles({
+      cli.lookupFiles({
           'foo.js': { lookup: true },
           'blah/bar.js': {},
           'xyz.js': { mandatory: true, lookup: true }
@@ -459,7 +459,7 @@ describe('cli', function () {
       };
       mocks.requires = { fs: bag.mock.fs(checks, mocks) };
       cli = create(checks, mocks);
-      cli.readFiles([
+      cli.lookupFiles([
           '/foo.js',
           'blah/bar.js',
           'xyz.js'
