@@ -1,6 +1,9 @@
 ### 0.1.0-pre
-* Remove mock since sandoxed-module has been inactive
+* Remove mock since sandoxed-module is no longer actively maintained
 * Combine cli#readConfigFileSync and cli#readCustomConfigFileSync into cli#lookupFile
+* Remove cli#parse (already replaced by cli#command in 0.0.16)
+* Remove cli#readFiles, async read files is slower than sync for small number of files
+* Remove irc#Bot, too specific
 
 ### 0.0.17
 * Add irc#Bot
