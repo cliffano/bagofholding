@@ -1,4 +1,7 @@
-### 0.1.0-pre
+### 0.1.1-pre
+*
+
+### 0.1.0
 * Remove mock since sandoxed-module is no longer actively maintained
 * Combine cli#readConfigFileSync and cli#readCustomConfigFileSync into cli#lookupFile
 * Remove cli#parse (already replaced by cli#command in 0.0.16)
