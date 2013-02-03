@@ -3,7 +3,7 @@ Bag Of Holding [![http://travis-ci.org/cliffano/bagofholding](https://secure.tra
 
 An uncursed bag of various Node.js utility functions.
 
-This is an extract of the reusable parts from various Node.js modules I've written. It contains convenient utilities for command-line tools, unit test mock functions, and data manipulation.
+This is an extract of the reusable parts of various Node.js modules I've written.
 
 Mostly for internal use.
 
@@ -23,8 +23,8 @@ Usage
 
     var bag = require('bagofholding');
     bag.cli.*;
-    bag.mock.*;
+    bag.http.*;
     bag.obj.*;
     bag.text.*;
 
-Check out the source code for a list of functions available for use.
+Check out [lib](https://github.com/cliffano/bagofholding/tree/master/lib) for the available methods of each component.
