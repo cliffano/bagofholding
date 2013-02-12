@@ -1,5 +1,5 @@
 ### 0.1.1-pre
-*
+* Add http#proxy, modify http#request to use environment variable proxy when not specified in opts
 
 ### 0.1.0
 * Remove mock since sandoxed-module is no longer actively maintained
