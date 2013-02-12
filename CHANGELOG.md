@@ -1,4 +1,7 @@
-### 0.1.1-pre
+### 0.1.2-pre
+*
+
+### 0.1.1
 * Add http#proxy, modify http#request to use environment variable proxy when not specified in opts
 
 ### 0.1.0
