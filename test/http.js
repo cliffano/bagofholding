@@ -128,9 +128,9 @@ buster.testCase('http - proxy', {
     this.stub(process, 'env', { https_proxy: 'https://someproxy' });
     assert.equals(http.proxy(), 'https://someproxy');
   },
-  'should return http proxy when url is not specified and HTTP PROXY exists but not https proxy': function () {
-    this.stub(process, 'env', { HTTP_PROXY: 'http://someproxy' });
-    assert.equals(http.proxy(), 'http://someproxy');
+  'should return http proxy when url is not specified and HTTPS PROXY exists but not https proxy': function () {
+    this.stub(process, 'env', { HTTPS_PROXY: 'https://someproxy' });
+    assert.equals(http.proxy(), 'https://someproxy');
   },
   'should return https proxy when url is not specified and HTTPS PROXY exists but not http proxy': function () {
     this.stub(process, 'env', { HTTPS_PROXY: 'https://someproxy' });
