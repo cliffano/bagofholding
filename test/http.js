@@ -84,8 +84,16 @@ buster.testCase('http - proxy', {
     this.stub(process, 'env', { http_proxy: 'http://someproxy', https_proxy: 'https://someproxy' });
     assert.equals(http.proxy('https://someurl'), 'https://someproxy');
   },
+  'should return https proxy when url uses https and both http and HTTPS PROXY exist': function () {
+    this.stub(process, 'env', { http_proxy: 'http://someproxy', HTTPS_PROXY: 'https://someproxy' });
+    assert.equals(http.proxy('https://someurl'), 'https://someproxy');
+  },
   'should return http proxy when url uses https and http proxy exists but not https proxy': function () {
     this.stub(process, 'env', { http_proxy: 'http://someproxy' });
+    assert.equals(http.proxy('https://someurl'), 'http://someproxy');
+  },
+  'should return http proxy when url uses https and HTTP PROXY exists but not https proxy': function () {
+    this.stub(process, 'env', { HTTP_PROXY: 'http://someproxy' });
     assert.equals(http.proxy('https://someurl'), 'http://someproxy');
   },
   'should return undefined when url uses https and no proxy environment variable exist': function () {
@@ -112,8 +120,20 @@ buster.testCase('http - proxy', {
     this.stub(process, 'env', { http_proxy: 'http://someproxy' });
     assert.equals(http.proxy(), 'http://someproxy');
   },
+  'should return http proxy when url is not specified and HTTP PROXY exists but not https proxy': function () {
+    this.stub(process, 'env', { HTTP_PROXY: 'http://someproxy' });
+    assert.equals(http.proxy(), 'http://someproxy');
+  },
   'should return https proxy when url is not specified and https proxy exists but not http proxy': function () {
     this.stub(process, 'env', { https_proxy: 'https://someproxy' });
+    assert.equals(http.proxy(), 'https://someproxy');
+  },
+  'should return http proxy when url is not specified and HTTP PROXY exists but not https proxy': function () {
+    this.stub(process, 'env', { HTTP_PROXY: 'http://someproxy' });
+    assert.equals(http.proxy(), 'http://someproxy');
+  },
+  'should return https proxy when url is not specified and HTTPS PROXY exists but not http proxy': function () {
+    this.stub(process, 'env', { HTTPS_PROXY: 'https://someproxy' });
     assert.equals(http.proxy(), 'https://someproxy');
   },
   'should return undefined when url is not specified and no proxy environment variable exists': function () {

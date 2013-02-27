@@ -1,5 +1,5 @@
 ### 0.1.2-pre
-*
+* http#proxy now handles HTTP_PROXY and HTTPS_PROXY along with http_proxy and https_proxy environment variables
 
 ### 0.1.1
 * Add http#proxy, modify http#request to use environment variable proxy when not specified in opts
