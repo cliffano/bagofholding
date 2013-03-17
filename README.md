@@ -1,4 +1,4 @@
-Bag Of Holding [![http://travis-ci.org/cliffano/bagofholding](https://secure.travis-ci.org/cliffano/bagofholding.png?branch=master)](http://travis-ci.org/cliffano/bagofholding)
+Bag Of Holding [![Build Status](https://secure.travis-ci.org/cliffano/bagofholding.png?branch=master)](http://travis-ci.org/cliffano/bagofholding) [![Dependencies Status](https://david-dm.org/cliffano/bagofholding.png)](http://david-dm.org/cliffano/bagofholding)
 --------------
 
 An uncursed bag of various Node.js utility functions.
