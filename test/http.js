@@ -37,6 +37,60 @@ buster.testCase('http - request', {
       done();
     });
   },
+  'should handle result based on wildcard status code': function (done) {
+    this.stub(process, 'env', {});
+    this.stub(request, 'get', function (params, cb) {
+      cb(null, { statusCode: '200', body: 'somebody' });
+    });
+    function _success(result, cb) {
+      assert.equals(result.statusCode, 200);
+      cb(null, result);
+    }
+    function _honeypot(result, cb) {
+      // should never be called
+    }
+    http.request('GET', 'http://someurl', { proxy: 'http://someproxy', queryStrings: { param1: 'value1' }, handlers: { 201: _honeypot, '20x': _success } }, function (err, result) {
+      assert.isNull(err);
+      assert.equals(result.statusCode, 200);
+      done();
+    });
+  },
+  'should handle result based on wildcard status code with multiple wildcard characters': function (done) {
+    this.stub(process, 'env', {});
+    this.stub(request, 'get', function (params, cb) {
+      cb(null, { statusCode: '200', body: 'somebody' });
+    });
+    function _success(result, cb) {
+      assert.equals(result.statusCode, 200);
+      cb(null, result);
+    }
+    function _honeypot(result, cb) {
+      // should never be called
+    }
+    http.request('GET', 'http://someurl', { proxy: 'http://someproxy', queryStrings: { param1: 'value1' }, handlers: { '2xx': _success, 201: _honeypot } }, function (err, result) {
+      assert.isNull(err);
+      assert.equals(result.statusCode, 200);
+      done();
+    });
+  },
+  'should handle result based on first match when there are multiple matches': function (done) {
+    this.stub(process, 'env', {});
+    this.stub(request, 'get', function (params, cb) {
+      cb(null, { statusCode: '200', body: 'somebody' });
+    });
+    function _success(result, cb) {
+      assert.equals(result.statusCode, 200);
+      cb(null, result);
+    }
+    function _honeypot(result, cb) {
+      // should never be called
+    }
+    http.request('GET', 'http://someurl', { proxy: 'http://someproxy', queryStrings: { param1: 'value1' }, handlers: { 200: _success, '2xx': _honeypot } }, function (err, result) {
+      assert.isNull(err);
+      assert.equals(result.statusCode, 200);
+      done();
+    });
+  },
   'should pass error to callback when result status code is not expected': function (done) {
     this.stub(process, 'env', {});
     this.stub(request, 'get', function (params, cb) {

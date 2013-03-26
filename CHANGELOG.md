@@ -1,5 +1,5 @@
 ### 0.1.3-pre
-*
+* Add http#req wildcard status code handling, e.g. 20x, 3xx
 
 ### 0.1.2
 * http#proxy now handles HTTP_PROXY and HTTPS_PROXY along with http_proxy and https_proxy environment variables
