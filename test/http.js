@@ -118,6 +118,19 @@ buster.testCase('http - request', {
       assert.equals(result, undefined);
       done();
     });
+  },
+  'should follow non-GET redirection': function (done) {
+    this.stub(request, 'post', function (params, cb) {
+      assert.isTrue(params.followAllRedirects);
+      cb(null, { statusCode: 302, body: 'somebody' });
+    });
+    function _redirect(result, cb) {
+      cb(null, result);
+    }
+    http.request('POST', 'http://someurl', { handlers: { 302: _redirect }}, function (err, result) {
+      assert.isNull(err);
+      done();
+    });
   }
 });
 
