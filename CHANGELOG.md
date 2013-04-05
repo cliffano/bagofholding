@@ -1,4 +1,7 @@
-### 0.1.3-pre
+### 0.1.4-pre
+*
+
+### 0.1.3
 * Add http#req wildcard status code handling, e.g. 20x, 3xx
 * Add http#req param followAllRedirects: true to follow non-GET redirection
 
