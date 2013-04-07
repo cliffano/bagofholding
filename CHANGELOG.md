@@ -1,4 +1,7 @@
-### 0.1.4-pre
+### 0.1.5-pre
+*
+
+### 0.1.4
 * Add http#req headers, payload (body, form, json, multipart), and requestOpts handling
 
 ### 0.1.3
