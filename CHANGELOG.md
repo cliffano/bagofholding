@@ -1,5 +1,5 @@
 ### 0.1.4-pre
-*
+* Add http#req headers, payload (body, form, json, multipart), and requestOpts handling
 
 ### 0.1.3
 * Add http#req wildcard status code handling, e.g. 20x, 3xx
