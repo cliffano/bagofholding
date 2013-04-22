@@ -22,6 +22,9 @@ Usage
 -----
 
     var bag = require('bagofholding');
+
+bag.http.req
+
     bag.cli.*;
     bag.http.*;
     bag.obj.*;

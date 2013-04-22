@@ -1,4 +1,7 @@
-### 0.1.5-pre
+### 0.1.6-pre
+*
+
+### 0.1.5
 * Add http#req timeout handling, default timeout changed to 2000 milliseconds
 
 ### 0.1.4
