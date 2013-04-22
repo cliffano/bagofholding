@@ -132,6 +132,19 @@ buster.testCase('http - request', {
       done();
     });
   },
+  'should set timeout': function (done) {
+    this.stub(request, 'post', function (params, cb) {
+      assert.equals(params.timeout, 10000);
+      cb(null, { statusCode: 200 });
+    });
+    function _success(result, cb) {
+      cb(null, result);
+    }
+    http.request('POST', 'http://someurl', { timeout: 10000, handlers: { 200: _success }}, function (err, result) {
+      assert.isNull(err);
+      done();
+    });
+  },
   'should set headers': function (done) {
     this.stub(request, 'post', function (params, cb) {
       assert.equals(params.headers.foo, 'bar');

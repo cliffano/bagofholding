@@ -1,5 +1,5 @@
 ### 0.1.5-pre
-*
+* Add http#req timeout handling, default timeout changed to 2000 milliseconds
 
 ### 0.1.4
 * Add http#req headers, payload (body, form, json, multipart), and requestOpts handling
