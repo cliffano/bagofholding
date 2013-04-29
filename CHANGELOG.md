@@ -1,4 +1,7 @@
-### 0.1.6-pre
+### 0.1.7-pre
+*
+
+### 0.1.6
 * Add http#req no proxy hosts handling, localhost and 127.0.0 will ignore proxy by default
 
 ### 0.1.5
