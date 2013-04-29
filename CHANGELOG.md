@@ -1,5 +1,5 @@
 ### 0.1.6-pre
-*
+* Add http#req no proxy hosts handling, localhost and 127.0.0 will ignore proxy by default
 
 ### 0.1.5
 * Add http#req timeout handling, default timeout changed to 2000 milliseconds

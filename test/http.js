@@ -119,6 +119,30 @@ buster.testCase('http - request', {
       done();
     });
   },
+  'should not set proxy when URL hostname is on the default no proxy hosts array': function (done) {
+    this.stub(process, 'env', { http_proxy: 'http://someproxy', https_proxy: 'https://someproxy' });
+    this.stub(request, 'get', function (params, cb) {
+      assert.equals(params.url, 'http://localhost');
+      assert.equals(params.proxy, undefined);
+      cb(null, { statusCode: 200, body: 'somebody' });
+    });
+    http.request('GET', 'http://localhost', {}, function (err, result) {
+      assert.equals(result, undefined);
+      done();
+    });
+  },
+  'should not set proxy when URL hostname is on no proxy hosts opt': function (done) {
+    this.stub(process, 'env', { http_proxy: 'http://someproxy', https_proxy: 'https://someproxy' });
+    this.stub(request, 'get', function (params, cb) {
+      assert.equals(params.url, 'http://someurl');
+      assert.equals(params.proxy, undefined);
+      cb(null, { statusCode: 200, body: 'somebody' });
+    });
+    http.request('GET', 'http://someurl', { noProxyHosts: ['someurl'] }, function (err, result) {
+      assert.equals(result, undefined);
+      done();
+    });
+  },
   'should follow non-GET redirection': function (done) {
     this.stub(request, 'post', function (params, cb) {
       assert.isTrue(params.followAllRedirects);
