@@ -1,4 +1,7 @@
-### 0.1.7-pre
+### 0.1.8-pre
+*
+
+### 0.1.7
 * Fix http#req delete method handling
 
 ### 0.1.6
