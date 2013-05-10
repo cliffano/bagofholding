@@ -37,6 +37,19 @@ buster.testCase('http - request', {
       done();
     });
   },
+  'should aliased http#req delete method into request del method': function (done) {
+    this.stub(process, 'env', {});
+    this.stub(request, 'del', function (params, cb) {
+      assert.equals(params.url, 'http://someurl');
+      cb(null, { statusCode: 200, body: 'somebody' });
+    });
+    function _success(result, cb) {
+      cb(null, result);
+    }
+    http.request('DELETE', 'http://someurl', { handlers: { 200: _success } }, function (err, result) {
+      done();
+    });
+  },
   'should handle result based on wildcard status code': function (done) {
     this.stub(process, 'env', {});
     this.stub(request, 'get', function (params, cb) {
