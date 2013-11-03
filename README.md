@@ -13,6 +13,6 @@ An uncursed bag of various node.js utility functions.
 
 This module is no longer maintained and has been replaced by:
 
-* [http://github.com/cliffano/bagofcli](cliffano/bagofcli)
-* [http://github.com/cliffano/bagofrequest](cliffano/bagofrequest)
-* [http://github.com/cliffano/bagoftext](cliffano/bagoftext)
+* [cliffano/bagofcli](http://github.com/cliffano/bagofcli)
+* [cliffano/bagofrequest](http://github.com/cliffano/bagofrequest)
+* [cliffano/bagoftext](http://github.com/cliffano/bagoftext)
