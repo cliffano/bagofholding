@@ -1,6 +1,6 @@
 {
   "name": "bagofholding",
-  "description": "An uncursed bag of various Node.js utility functions.",
+  "description": "An uncursed bag of various node.js utility functions.",
   "keywords": [],
   "version": "0.1.8",
   "homepage": "http://github.com/cliffano/bagofholding",
