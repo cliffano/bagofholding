@@ -16,3 +16,8 @@ This module is no longer maintained and has been replaced by:
 * [cliffano/bagofcli](http://github.com/cliffano/bagofcli)
 * [cliffano/bagofrequest](http://github.com/cliffano/bagofrequest)
 * [cliffano/bagoftext](http://github.com/cliffano/bagoftext)
+
+Colophon
+--------
+
+[Developer's Guide](http://cliffano.github.io/developers_guide.html#nodejs)
