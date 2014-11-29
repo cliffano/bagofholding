@@ -1,4 +1,5 @@
-var buster = require('buster'),
+var assert = require('assert'),
+  buster = require('buster'),
   http = require('../lib/http'),
   request = require('request');
 

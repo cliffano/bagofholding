@@ -1,4 +1,5 @@
-var buster = require('buster'),
+var assert = require('assert'),
+  buster = require('buster'),
   obj = require('../lib/obj');
 
 buster.testCase('obj - exist', {

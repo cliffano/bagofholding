@@ -1,4 +1,5 @@
-var buster = require('buster'),
+var assert = require('assert'),
+  buster = require('buster'),
   childProcess = require('child_process'),
   cli = require('../lib/cli'),
   commander = require('commander'),

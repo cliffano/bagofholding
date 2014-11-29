@@ -1,4 +1,5 @@
-var bag = require('../lib/bagofholding'),
+var assert = require('assert'),
+  bag = require('../lib/bagofholding'),
   buster = require('buster');
 
 buster.testCase('bagofholding', {
