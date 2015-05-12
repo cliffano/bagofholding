@@ -1,7 +1,7 @@
 <img align="right" src="https://raw.github.com/cliffano/bagofholding/master/avatar.jpg" alt="Avatar"/>
 
-[![Build Status](https://secure.travis-ci.org/cliffano/bagofholding.png?branch=master)](http://travis-ci.org/cliffano/bagofholding)
-[![Dependencies Status](https://david-dm.org/cliffano/bagofholding.png)](http://david-dm.org/cliffano/bagofholding)
+[![Build Status](https://img.shields.io/travis/cliffano/bagofholding.svg)](http://travis-ci.org/cliffano/bagofholding)
+[![Dependencies Status](https://img.shields.io/david/cliffano/bagofholding.svg)](http://david-dm.org/cliffano/bagofholding)
 [![Published Version](https://badge.fury.io/js/bagofholding.png)](http://badge.fury.io/js/bagofholding)
 <br/>
 [![npm Badge](https://nodei.co/npm/bagofholding.png)](http://npmjs.org/package/bagofholding)
