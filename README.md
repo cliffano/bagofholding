@@ -2,7 +2,7 @@
 
 [![Build Status](https://img.shields.io/travis/cliffano/bagofholding.svg)](http://travis-ci.org/cliffano/bagofholding)
 [![Dependencies Status](https://img.shields.io/david/cliffano/bagofholding.svg)](http://david-dm.org/cliffano/bagofholding)
-[![Published Version](https://badge.fury.io/js/bagofholding.png)](http://badge.fury.io/js/bagofholding)
+[![Published Version](https://img.shields.io/npm/v/bagofholding.svg)](http://www.npmjs.com/package/bagofholding)
 <br/>
 [![npm Badge](https://nodei.co/npm/bagofholding.png)](http://npmjs.org/package/bagofholding)
 
