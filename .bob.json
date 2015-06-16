@@ -8,5 +8,8 @@
   },
   "coverage": {
     "type": "buster-istanbul"
+  },
+  "site": {
+    "type": "gh-pages-cli"
   }
 }
