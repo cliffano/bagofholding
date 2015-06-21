@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - lib/http.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>lib/http.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">66.28</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">131</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">30.22</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">0.87</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/*jshint esnext: true */
+var request = require(&#039;request&#039;),
+  _url = require(&#039;url&#039;);
+
+/**
+ * Sends a HTTP request to a specified URL with optional proxy, query strings, and handlers.
+ * Convenient handling of request error and unexpected status code.
+ * GET redirection is handled by default by request module.
+ * Non-GET redirection is handled by params followAllRedirects: true.
+ *
+ * @param {String} method: http method
+ * @param {String} url: URL without query string
+ * @param {Object} opts: optional
+ *   - proxy: proxy server URL with format http://user:pass@host:port
+ *   - noProxyHosts: an array of host names which will ignore any proxy settings, defaults to: localhost, 127.0.0.1
+ *   - queryStrings: object containing URL query strings with format { name: value }
+ *   - handlers: response handlers with format { statuscode: function(result, cb) }
+ *   - headers: object containing http headers, exact map to mikeal/request headers opt
+ *   - body, form, json, multipart: request payload, exact map to mikeal/request module body, form, json, multipart opts
+ *   - timeout: request timeout in milliseconds, default to 2000 milliseconds
+ *   - requestOpts: mikeal/request module opts, these opts will override any params set by http#req 
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+function req(method, url, opts, cb) {
+  opts.handlers = opts.handlers || {};
+
+  const TIMEOUT = 2000;
+  // init default settings with follow redirections on all methods, and 2 seconds timeout
+  var params = { url: url, followAllRedirects: true, timeout: opts.timeout || TIMEOUT },
+    envProxy = proxy(url);
+
+  function _proxyIgnored() {
+    const NO_PROXY_HOSTS = [&#039;localhost&#039;, &#039;127.0.0.1&#039;];
+    return (opts.noProxyHosts || NO_PROXY_HOSTS).indexOf(_url.parse(url).hostname) !== -1;
+  }
+
+  // set proxy setting based on environment variable
+  if (!_proxyIgnored()) {
+    if (opts.proxy) {
+      params.proxy = opts.proxy;
+    } else if (envProxy) {
+      params.proxy = envProxy;
+    }
+  }
+
+  // just a more readable opt name for query strings
+  if (opts.queryStrings) {
+    params.qs = opts.queryStrings;
+  }
+
+  // headers and payload handling
+  [&#039;headers&#039;, &#039;body&#039;, &#039;form&#039;, &#039;json&#039;, &#039;multipart&#039;].forEach(function (opt) {
+    if (opts[opt]) {
+      params[opt] = opts[opt];
+    }
+  });
+
+  // override defaults with mikeal/request-specific opts
+  if (opts.requestOpts) {
+    Object.keys(opts.requestOpts).forEach(function (opt) {
+      params[opt] = opts.requestOpts[opt];
+    });
+  }
+
+  // check for any wildcard match (e.g. 201 matches 2xx)
+  function _wildcardMatch(statusCode) {
+    var match;
+    Object.keys(opts.handlers).forEach(function (handlerStatusCode) {
+      var regex = new RegExp(handlerStatusCode.replace(/x/g, &#039;.&#039;));
+      if (!match &amp;&amp; statusCode.toString().match(regex)) {
+        match = handlerStatusCode;
+      }
+    });
+    return match;
+  }
+
+  function _requestMethod(method) {
+    var requestMethod = method.toLowerCase();
+    if (requestMethod === &#039;delete&#039;) {
+      requestMethod = &#039;del&#039;;
+    }
+    return requestMethod;
+  }
+
+  request[_requestMethod(method)](params, function (err, result) {
+    if (err) {
+      cb(err);
+    } else {
+      var wildcardMatch = _wildcardMatch(result.statusCode);
+      if (opts.handlers[result.statusCode]) {
+        opts.handlers[result.statusCode](result, cb);
+      } else if (wildcardMatch) {
+        opts.handlers[wildcardMatch](result, cb);
+      } else {
+        cb(new Error(&#039;Unexpected status code: &#039; + result.statusCode + &#039;\nResponse body:\n&#039; + result.body));
+      }
+    }
+  });
+}
+
+/**
+ * Determines proxy value based on URL and process environment variable (http_proxy, https_proxy).
+ * This allows library clients to control which proxy to use by setting environment variable.
+ * - if url starts with http, use http_proxy when available
+ * - if url starts with https, use https_proxy when available, otherwise fallback to http_proxy
+ * - if url does not have protocol, assume http protocol
+ * - if url is not specified, http_proxy takes precedence over https_proxy
+ *
+ * @param {String} url: URL used to determine which proxy environment variable to use
+ */
+function proxy(url) {
+  var _proxy;
+
+  if (!url) {
+    _proxy = process.env.http_proxy || process.env.HTTP_PROXY || process.env.https_proxy || process.env.HTTPS_PROXY;
+  } else {
+    if (!url.match(/^https?:\/\//)) {
+      url += &#039;http://&#039; + url;
+    }
+
+    if (url.match(/^https:\/\//)) {
+      _proxy = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
+    } else {
+      _proxy = process.env.http_proxy;
+    }
+  }
+
+  return _proxy;
+}
+
+exports.request = req;
+exports.proxy = proxy;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

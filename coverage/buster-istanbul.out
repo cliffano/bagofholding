@@ -1,0 +1,131 @@
+Running tests ...
+[1A[KRunning 80 tests in 1 runtime ...
+[1A[K[1m[33mError: [0mhttp - request | should set proxy to environment variable when available
+  [1m[33mTypeError: undefined is not a function[0m
+    TypeError: undefined is not a function
+          at Function.<anonymous> (/Users/cliffano/dev/workspace/bagofholding/test/http.js:125:14)
+          at Function.invoke (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/sinon/lib/sinon/spy.js:153:55)
+          at Function.proxy (eval at createProxy (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/sinon/lib/sinon/spy.js:77:82), <anonymous>:1:37)
+          at Object.req [as request] (/Users/cliffano/dev/workspace/bagofholding/lib/http.js:9:3665)
+          at Object.buster.testCase.should set proxy to environment variable when available (/Users/cliffano/dev/workspace/bagofholding/test/http.js:130:10)
+          at asyncFunction (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:216:16)
+          at callTestFn (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:321:27)
+          at /Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:36:23
+          at /Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:36:23
+          at Object.then (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/when/when.js:207:55)
+[1m[31mRunning 80 tests in 1 runtime ... 1% done[0m
+[1A[K[1m[33mError: [0mcli - lookupFile | should return file content in home directory when it exists but none exists in current directory and platform is non windows
+  [1m[33mTypeError: Cannot assign to read only property 'platform' of #<process>[0m
+    TypeError: Cannot assign to read only property 'platform' of #<process>
+          at Object.stub (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/sinon/lib/sinon/collection.js:101:38)
+          at Object.obj.stub (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/sinon/lib/sinon/collection.js:137:33)
+          at Object.buster.testCase.should return file content in home directory when it exists but none exists in current directory and platform is non windows (/Users/cliffano/dev/workspace/bagofholding/test/cli.js:177:10)
+          at asyncFunction (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:219:19)
+          at callTestFn (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:321:27)
+          at /Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:36:23
+          at /Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:36:23
+          at Object.then (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/when/when.js:207:55)
+          at Object.bane.createEventEmitter.runTest (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:637:26)
+          at Object.<anonymous> (/Users/cliffano/dev/workspace/bagofholding/node_modules/buster/node_modules/buster-test/lib/test-runner.js:605:29)
+[1m[31mRunning 80 tests in 1 runtime ... 3% done[0m
+[1A[K
+Repeated exceptions:
+  should set proxy to environment variable when available
+  should follow non-GET redirection
+  should handle result based on first match when there are multiple matches
+  should handle result based on wildcard status code
+  should handle result based on wildcard status code with multiple wildcard characters
+  should pass error to callback when there is an error while sending request
+  should pass error to callback when result status code is not expected
+  should set request payload
+  should set headers
+  should not set proxy when URL hostname is on no proxy hosts opt
+  should aliased http#req delete method into request del method
+  should set timeout
+  should not set proxy when URL hostname is on the default no proxy hosts array
+  should handle result based on status code
+  should override http#req params when requestOpts is provided
+  should return file content in current directory when it exists
+  should return file content with absolute path when it exists
+  should return compiled text
+  should return false when object is empty
+  should return false when object is undefined
+  should return false when dsv is empty
+  should return false when dsv is undefined
+  should return true when object contains a property
+  should return false when object does not contain nested properties
+  should return true when object contains nested properties
+  should log and pass error to callback when an error occurs and fallthrough is not allowed
+  should log and camouflage error to callback when an error occurs and fallthrough is allowed
+  should log output and pass success callback when there is no error
+  should pass error and exit code to callback when exit code is not 0
+  should write data via stdout and stderr when data event is emitted
+  should pass no error and exit code to callback when exit code is 0
+  should return undefined when url does not specify protocol and https proxy exists but not http proxy
+  should return https proxy when url uses https and both http and https proxy exist
+  should return http proxy when url uses https and http proxy exists but not https proxy
+  should return https proxy when url is not specified and https proxy exists but not http proxy
+  should return http proxy when url is not specified and HTTPS PROXY exists but not https proxy
+  should return http proxy when url is not specified and both http and https proxy exist
+  should return undefined when url does not specify protocol and no proxy environment variable exists
+  should return undefined when url uses https and no proxy environment variable exist
+  should return http proxy when url is not specified and HTTP PROXY exists but not https proxy
+  should return undefined when url uses http and https proxy exist but not http proxy
+  should return undefined when url is not specified and no proxy environment variable exists
+  should return https proxy when url is not specified and HTTPS PROXY exists but not http proxy
+  should return http proxy when url is not specified and http proxy exists but not https proxy
+  should return http proxy when url does not specify protocol and both http and https proxy exist
+  should return http proxy when url uses https and HTTP PROXY exists but not https proxy
+  should return https proxy when url uses https and both http and HTTPS PROXY exist
+  should return undefined when url uses http and no proxy environment variable exists
+  should return http proxy when url uses http and both http and https proxy exist
+  should expose all modules
+  should exit with status code 1 and call error callback when error exists and error callback is specified
+  should exit with status code 0 and call success callback when error does not exist and success callback is specified
+  should return original text when it does not have any params
+  should return text with applied parameter when parameter value is supplied
+  should return text with multiple applied parameters when parameter values are supplied
+  should return empty string when text is undefined, null, or blank
+  should return original text when it does not have any params
+  should return text with multiple function parameters when parameter values are supplied
+  should return text with applied parameter when parameter value is supplied
+  should return text with multiple applied parameters when parameter values are supplied
+  should remove parameter when value is not supplied
+  should return undefined when object is empty
+  should return undefined when dsv is empty
+  should return undefined when object is undefined
+  should return undefined when dsv is undefined
+  should return value when object has one property
+  should return value when object has nested properties
+  should return value when object has multi nested properties
+  should return undefined if nested properties do not exist but the name of leaf node property exists as root property in object
+
+  [1m[33mTypeError: undefined is not a function[0m
+    TypeError: undefined is not a function  should return file content in home directory when it exists but none exists in current directory and platform is non windows
+  should throw an error when configuration file does not exist anywhere and file has relative path
+  should return file content in home directory when it exists but none exists in current directory and platform is windows
+  should throw an error when configuration file does not exist anywhere and file has absolute path
+
+  [1m[33mTypeError: Cannot assign to read only property 'platform' of #<process>[0m
+    TypeError: Cannot assign to read only property 'platform' of #<process>
+[1m[31m80 tests, 29 assertions, 1 runtime ... 73 errors[0m
+----------------------|-----------|-----------|-----------|-----------|
+File                  |   % Stmts |% Branches |   % Funcs |   % Lines |
+----------------------|-----------|-----------|-----------|-----------|
+   lib/               |     91.88 |     89.13 |     88.89 |     91.88 |
+      bagofholding.js |       100 |       100 |       100 |       100 |
+      cli.js          |     84.29 |     77.78 |     77.78 |     84.29 |
+      http.js         |      96.3 |     95.45 |       100 |      96.3 |
+      obj.js          |       100 |       100 |       100 |       100 |
+      text.js         |       100 |       100 |       100 |       100 |
+----------------------|-----------|-----------|-----------|-----------|
+All files             |     91.88 |     89.13 |     88.89 |     91.88 |
+----------------------|-----------|-----------|-----------|-----------|
+
+
+=============================== Coverage summary ===============================
+Statements   : 91.88% ( 147/160 )
+Branches     : 89.13% ( 82/92 )
+Functions    : 88.89% ( 32/36 )
+Lines        : 91.88% ( 147/160 )
+================================================================================

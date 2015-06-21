@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - lib/cli.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>lib/cli.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">73.47</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">205</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">40.65</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.25</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var _ = require(&#039;underscore&#039;),
+  async = require(&#039;async&#039;),
+  child = require(&#039;child_process&#039;),
+  commander = require(&#039;commander&#039;),
+  fs = require(&#039;fs&#039;),
+  p = require(&#039;path&#039;);
+
+/**
+ * Parse command line arguments and execute actions based on the specified commands.
+ * Uses commander.js to provide -V / --version to display version number,
+ * and -h / --help to display help info.
+ *
+ * @param {String} base: base directory where the client module is located,
+ *   used as a base directory to read command file and package.json file,
+ *   ideally the value would be the client&#039;s __dirname
+ * @param {Object} actions: action function for each command in format: { command: { action: function () {} }},
+ *   the command name in actions object is then mapped to the command name specified in commandFile
+ * @param {Object} opts: optional
+ *   - commandFile: relative path to command file from base directory, defaults to &#039;conf/commands.json&#039;
+ */
+function command(base, actions, opts) {
+
+  actions = actions || {};
+  opts = opts || {};
+
+  var commands = JSON.parse(fs.readFileSync(p.join(base, opts.commandFile || &#039;../conf/commands.json&#039;))),
+    pkg = JSON.parse(fs.readFileSync(p.join(base, &#039;../package.json&#039;)));
+
+  if (actions.commands &amp;&amp; commands.commands) {
+    _.each(actions.commands, function (command, name) {
+      if (commands.commands[name]) {
+        commands.commands[name].action = command.action; 
+      }
+    });
+  }
+
+  commander.version(pkg.version);
+
+  if (commands.options) {
+    _.each(commands.options, function (option) {
+      commander.option(option.arg, option.desc, option.action);
+    });
+  }
+
+  _.each(commands.commands, function (command, name) {
+    var program = commander
+      .command(name)
+      .description(command.desc);
+
+    _.each(command.options, function (option) {
+      program.option(option.arg, option.desc, option.action);
+    });
+
+    program.action(command.action);
+  });
+
+  commander.parse(process.argv);
+}
+
+/**
+ * Execute a one-liner command.
+ * Both stderr and stdout will be logged via console.error/log accordingly.
+ * Fallthrough is handy in situation where there are multiple execs running in sequence/parallel,
+ * and they all have to be executed regardless of success/error on either one of them.
+ *
+ * @param {String} command: command to execute
+ * @param {Boolean} fallthrough: allow error to be camouflaged as a non-error
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+function exec(command, fallthrough, cb) {
+
+  child.exec(command, function (err, stdout, stderr) {
+    if (err) {
+      console.error(&#039;Error: &#039; + stderr);
+      if (fallthrough) {
+        // camouflage error to allow other execs to keep running
+        cb(null, err);
+      } else {
+        cb(err);
+      }
+    } else {
+      console.log(stdout);
+      cb();
+    }
+  });
+}
+
+/**
+ * Handle process exit based on the existence of error.
+ * This is handy for command-line tools to use as the final callback.
+ * Exit status code 1 indicates an error, exit status code 0 indicates a success.
+ * Error message will be logged to the console. Result object is only used for convenient debugging.
+ *
+ * @param {Error} err: error object existence indicates the occurence of an error
+ * @param {Object} result: result object
+ */
+function exit(err, result) {
+  if (err) {
+    console.error(err.message);
+    process.exit(1);
+  } else {
+    process.exit(0);
+  }
+}
+
+/**
+ * A higher order function that returns a process exit callback,
+ * with error and success callbacks to handle error and result accordingly.
+ * Exit status code 1 indicates an error, exit status code 0 indicates a success.
+ *
+ * @param {Function} errorCb: error callback accepts error argument, defaults to logging to console error
+ * @param {Function} successCb: success callback accepts result argument, defaults to logging to console log
+ */
+function exitCb(errorCb, successCb) {
+
+  if (!errorCb) {
+    errorCb = function (err) {
+      console.error(err.message);
+    };
+  }
+
+  if (!successCb) {
+    successCb = function (result) {
+      console.log(result);
+    };
+  }
+
+  return function (err, result) {
+    if (err) {
+      errorCb(err);
+      process.exit(1);
+    } else {
+      successCb(result);
+      process.exit(0);
+    }
+  };
+}
+
+/**
+ * Synchronously read file based on these rules:
+ * - if path is absolute, then check file at absolute path first
+ * - if path is relative, then check file at current working directory
+ * - if none of the above exists, check file at user home directory
+ * - if none exists, throw an error
+ * This allows simple file lookup which allows various locations.
+ *
+ * @param {String} file: the file name to read
+ * @return {String} content of the file
+ */
+function lookupFile(file) {
+  var data,
+    baseDir = file.match(/^\//) ? p.dirname(file) : process.cwd(),
+    homeDir = process.env[(process.platform === &#039;win32&#039;) ? &#039;USERPROFILE&#039; : &#039;HOME&#039;],
+    files = _.map([ baseDir, homeDir ], function (dir) {
+      return p.join(dir, file.match(/^\//) ? p.basename(file) : file);
+    });
+
+  for (var i = 0, ln = files.length; i &lt; ln; i += 1) {
+    try {
+      data = fs.readFileSync(files[i]);
+      break;
+    } catch (err) {
+    }
+  }
+
+  if (data) {
+    return data;
+  } else {
+    throw new Error(&#039;Unable to lookup file in &#039; + files.join(&#039;, &#039;));
+  }
+}
+
+/**
+ * Execute a command with an array of arguments.
+ * E.g. command: make, arguments: -f somemakefile target1 target2 target3
+ *      will be executed as: make -f somemakefile target1 target2 target3
+ * NOTE: process.stdout.write and process.stderr.write are used because console.log adds a newline
+ *
+ * @param {String} command: command to execute
+ * @param {Array} args: command arguments
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+function spawn(command, args, cb) {
+
+  var _spawn = child.spawn(command, args);
+
+  _spawn.stdout.on(&#039;data&#039;, function (data) {
+    process.stdout.write(data);
+  });
+
+  _spawn.stderr.on(&#039;data&#039;, function (data) {
+    process.stderr.write(data);
+  });
+
+  _spawn.on(&#039;exit&#039;, function (code) {
+    cb((code !== 0) ? new Error(code) : undefined, code);
+  });
+}
+
+exports.command = command;
+exports.exec = exec;
+exports.exit = exit;
+exports.exitCb = exitCb;
+exports.lookupFile = lookupFile;
+exports.spawn = spawn;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

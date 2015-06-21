@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for lib/http.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">lib/http.js</span></h1>
+    <h2>
+        Statements: <span class="metric">96.3% <small>(52 / 54)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">95.45% <small>(42 / 44)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(9 / 9)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">96.3% <small>(52 / 54)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">lib/</a> &#187; http.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">13</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">75</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*jshint esnext: true */
+var request = require('request'),
+  _url = require('url');
+&nbsp;
+/**
+ * Sends a HTTP request to a specified URL with optional proxy, query strings, and handlers.
+ * Convenient handling of request error and unexpected status code.
+ * GET redirection is handled by default by request module.
+ * Non-GET redirection is handled by params followAllRedirects: true.
+ *
+ * @param {String} method: http method
+ * @param {String} url: URL without query string
+ * @param {Object} opts: optional
+ *   - proxy: proxy server URL with format http://user:pass@host:port
+ *   - noProxyHosts: an array of host names which will ignore any proxy settings, defaults to: localhost, 127.0.0.1
+ *   - queryStrings: object containing URL query strings with format { name: value }
+ *   - handlers: response handlers with format { statuscode: function(result, cb) }
+ *   - headers: object containing http headers, exact map to mikeal/request headers opt
+ *   - body, form, json, multipart: request payload, exact map to mikeal/request module body, form, json, multipart opts
+ *   - timeout: request timeout in milliseconds, default to 2000 milliseconds
+ *   - requestOpts: mikeal/request module opts, these opts will override any params set by http#req 
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+function req(method, url, opts, cb) {
+  opts.handlers = opts.handlers || {};
+&nbsp;
+  const TIMEOUT = 2000;
+  // init default settings with follow redirections on all methods, and 2 seconds timeout
+  var params = { url: url, followAllRedirects: true, timeout: opts.timeout || TIMEOUT },
+    envProxy = proxy(url);
+&nbsp;
+  function _proxyIgnored() {
+    const NO_PROXY_HOSTS = ['localhost', '127.0.0.1'];
+    return (opts.noProxyHosts || NO_PROXY_HOSTS).indexOf(_url.parse(url).hostname) !== -1;
+  }
+&nbsp;
+  // set proxy setting based on environment variable
+  if (!_proxyIgnored()) {
+    if (opts.proxy) {
+      params.proxy = opts.proxy;
+    } else if (envProxy) {
+      params.proxy = envProxy;
+    }
+  }
+&nbsp;
+  // just a more readable opt name for query strings
+  if (opts.queryStrings) {
+    params.qs = opts.queryStrings;
+  }
+&nbsp;
+  // headers and payload handling
+  ['headers', 'body', 'form', 'json', 'multipart'].forEach(function (opt) {
+    if (opts[opt]) {
+      params[opt] = opts[opt];
+    }
+  });
+&nbsp;
+  // override defaults with mikeal/request-specific opts
+  if (opts.requestOpts) {
+    Object.keys(opts.requestOpts).forEach(function (opt) {
+      params[opt] = opts.requestOpts[opt];
+    });
+  }
+&nbsp;
+  // check for any wildcard match (e.g. 201 matches 2xx)
+  function _wildcardMatch(statusCode) {
+    var match;
+    Object.keys(opts.handlers).forEach(function (handlerStatusCode) {
+      var regex = new RegExp(handlerStatusCode.replace(/x/g, '.'));
+      if (!match &amp;&amp; statusCode.toString().match(regex)) {
+        match = handlerStatusCode;
+      }
+    });
+    return match;
+  }
+&nbsp;
+  function _requestMethod(method) {
+    var requestMethod = method.toLowerCase();
+    if (requestMethod === 'delete') {
+      requestMethod = 'del';
+    }
+    return requestMethod;
+  }
+&nbsp;
+  request[_requestMethod(method)](params, function (err, result) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >      cb(err);</span>
+    } else {
+      var wildcardMatch = _wildcardMatch(result.statusCode);
+      if (opts.handlers[result.statusCode]) {
+        opts.handlers[result.statusCode](result, cb);
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (wildcardMatch) {
+        opts.handlers[wildcardMatch](result, cb);
+      } else {
+<span class="cstat-no" title="statement not covered" >        cb(new Error('Unexpected status code: ' + result.statusCode + '\nResponse body:\n' + result.body));</span>
+      }
+    }
+  });
+}
+&nbsp;
+/**
+ * Determines proxy value based on URL and process environment variable (http_proxy, https_proxy).
+ * This allows library clients to control which proxy to use by setting environment variable.
+ * - if url starts with http, use http_proxy when available
+ * - if url starts with https, use https_proxy when available, otherwise fallback to http_proxy
+ * - if url does not have protocol, assume http protocol
+ * - if url is not specified, http_proxy takes precedence over https_proxy
+ *
+ * @param {String} url: URL used to determine which proxy environment variable to use
+ */
+function proxy(url) {
+  var _proxy;
+&nbsp;
+  if (!url) {
+    _proxy = process.env.http_proxy || process.env.HTTP_PROXY || process.env.https_proxy || process.env.HTTPS_PROXY;
+  } else {
+    if (!url.match(/^https?:\/\//)) {
+      url += 'http://' + url;
+    }
+&nbsp;
+    if (url.match(/^https:\/\//)) {
+      _proxy = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
+    } else {
+      _proxy = process.env.http_proxy;
+    }
+  }
+&nbsp;
+  return _proxy;
+}
+&nbsp;
+exports.request = req;
+exports.proxy = proxy;
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 21 2015 12:41:36 GMT+1000 (AEST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
