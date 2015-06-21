@@ -24,7 +24,7 @@ Colophon
 
 Build reports:
 
-* [Code complexity report](http://cliffano.github.io/bagofholding/bob/complexity/plato/index.html)
-* [Unit tests report](http://cliffano.github.io/bagofholding/bob/test/buster.out)
-* [Test coverage report](http://cliffano.github.io/bagofholding/bob/coverage/buster-istanbul/lcov-report/lib/index.html)
-* [API Documentation](http://cliffano.github.io/bagofholding/bob/doc/dox-foundation/index.html)
+* [Code complexity report](http://cliffano.github.io/bagofholding/complexity/plato/index.html)
+* [Unit tests report](http://cliffano.github.io/bagofholding/test/buster.out)
+* [Test coverage report](http://cliffano.github.io/bagofholding/coverage/buster-istanbul/lcov-report/lib/index.html)
+* [API Documentation](http://cliffano.github.io/bagofholding/doc/dox-foundation/index.html)
